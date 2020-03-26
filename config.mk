@@ -12,7 +12,6 @@ CFLAGS = -Weverything -g -ggdb -fno-diagnostics-color \
 
 LDFLAGS = -Wl,-z,relro,-z,now,--build-id -pie \
 	`{pkg-config --libs glew glfw3 libcurl sqlite3} \
-	-lm -lpthread \
 	$LDFLAGS
 
 all:V: $TARGS
