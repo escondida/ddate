@@ -88,8 +88,7 @@
 #define BUILD_BUG_ON_ZERO(e) (sizeof(struct { int : -!!(e); }))
 
 /* work around hacks for standalone package */
-#define PACKAGE "ddate"
-#define PACKAGE_STRING "Stand Alone"
+#define PACKAGE_STRING "standalone"
 
 #ifndef __GNUC__
 	#define inline /* foo */
