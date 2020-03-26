@@ -76,11 +76,11 @@
 // work around includes and defines from formerly c.h
 #ifndef ARRAY_SIZE
 	#define ARRAY_SIZE(arr) \
-		(sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+		(sizeof(arr) / sizeof((arr)[0]) + must_be_array(arr))
 #endif
 
 /* &a[0] degrades to a pointer: a different type from an array */
-#define __must_be_array(a) \
+#define must_be_array(a) \
 	BUILD_BUG_ON_ZERO( \
 			__builtin_types_compatible_p(__typeof__(a), __typeof__(&a[0])))
 
