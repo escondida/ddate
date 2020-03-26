@@ -99,48 +99,12 @@ int
 xday_countdown(int yday, int year);
 #endif
 
-/* string constants */
-
-char *day_long[5] = {"Sweetmorn", "Boomtime", "Pungenday", "Prickle-Prickle",
-					 "Setting Orange"};
-
-char *day_short[5] = {"SM", "BT", "PD", "PP", "SO"};
-
-char *season_long[5] = {"Chaos", "Discord", "Confusion", "Bureaucracy",
-						"The Aftermath"};
-
-char *season_short[5] = {"Chs", "Dsc", "Cfn", "Bcy", "Afm"};
-
-char *holyday[5][2] = {{"Mungday", "Chaoflux"},
-					   {"Mojoday", "Discoflux"},
-					   {"Syaday", "Confuflux"},
-					   {"Zaraday", "Bureflux"},
-					   {"Maladay", "Afflux"}};
-
 struct disc_time {
 	int season; /* 0-4 */
 	int day; /* 0-72 */
 	int yday; /* 0-365 */
 	int year; /* 3066- */
 };
-
-char *excl[] = {"Hail Eris!", "All Hail Discordia!", "Kallisti!", "Fnord.",
-				"Or not.", "Wibble.", "Pzat!", "P'tang!", "Frink!",
-#ifdef PRAISE_BOB
-				"Slack!", "Praise \"Bob\"!", "Or kill me.",
-#endif /* PRAISE_BOB */
-				/* randomness, from the Net and other places. Feel free to add
-				   (after checking with the relevant authorities, of course). */
-				"Grudnuk demand sustenance!", "Keep the Lasagna flying!",
-				"You are what you see.", "Or is it?",
-				"This statement is false.", "Lies and slander, sire!",
-				"Hee hee hee!",
-#if defined(linux) || defined(__linux__) || defined(__linux)
-				"Hail Eris, Hack Linux!",
-#elif defined(__APPLE__)
-				"This Fruit is not the True Fruit of Discord.",
-#endif
-				""};
 
 char default_fmt[] = "%{%A, %B %d%}, %Y YOLD";
 char *default_immediate_fmt =
@@ -265,6 +229,39 @@ format(char *buf, const char *fmt, struct disc_time dt)
 	int i, fmtlen = strlen(fmt);
 	char *bufptr = buf;
 
+	char *day_long[5] = {"Sweetmorn", "Boomtime", "Pungenday",
+						 "Prickle-Prickle", "Setting Orange"};
+
+	char *day_short[5] = {"SM", "BT", "PD", "PP", "SO"};
+
+	char *season_long[5] = {"Chaos", "Discord", "Confusion", "Bureaucracy",
+							"The Aftermath"};
+
+	char *season_short[5] = {"Chs", "Dsc", "Cfn", "Bcy", "Afm"};
+
+	char *holyday[5][2] = {{"Mungday", "Chaoflux"},
+						   {"Mojoday", "Discoflux"},
+						   {"Syaday", "Confuflux"},
+						   {"Zaraday", "Bureflux"},
+						   {"Maladay", "Afflux"}};
+
+	char *excl[] = {"Hail Eris!", "All Hail Discordia!", "Kallisti!", "Fnord.",
+					"Or not.", "Wibble.", "Pzat!", "P'tang!", "Frink!",
+#ifdef PRAISE_BOB
+				"Slack!", "Praise \"Bob\"!", "Or kill me.",
+#endif /* PRAISE_BOB */
+				/* randomness, from the Net and other places. Feel free to add
+				   (after checking with the relevant authorities, of course). */
+				"Grudnuk demand sustenance!", "Keep the Lasagna flying!",
+				"You are what you see.", "Or is it?",
+				"This statement is false.", "Lies and slander, sire!",
+				"Hee hee hee!",
+#if defined(linux) || defined(__linux__) || defined(__linux)
+				"Hail Eris, Hack Linux!",
+#elif defined(__APPLE__)
+				"This Fruit is not the True Fruit of Discord.",
+#endif
+				""};
 	/*    fprintf(stderr, "format(%p, \"%s\", dt)\n", buf, fmt);*/
 
 	/* first, find extents of St. Tib's Day area, if defined */
@@ -280,7 +277,7 @@ format(char *buf, const char *fmt, struct disc_time dt)
 				} else {
 					tib_start = i;
 					tib_end = i + 1;
-			}
+				}
 				break;
 			case '{':
 				tib_start = i;
@@ -290,10 +287,10 @@ format(char *buf, const char *fmt, struct disc_time dt)
 					tib_end = i + 1;
 					break;
 				} else {
-					fputs("St. Tib's day can't end until after it starts!", stderr);
+					fputs("St. Tib's day can't end until after it starts!",
+						  stderr);
 					goto eschaton;
 				}
-
 			}
 		}
 	}
