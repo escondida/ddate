@@ -275,18 +275,25 @@ format(char *buf, const char *fmt, struct disc_time dt)
 			case 'a':
 			case 'd':
 			case 'e':
-				if (tib_start > 0) {
+				if (tib_start >= 0) {
 					tib_end = i + 1;
 				} else {
 					tib_start = i;
-				}
+					tib_end = i + 1;
+			}
 				break;
 			case '{':
 				tib_start = i;
 				break;
 			case '}':
-				tib_end = i + 1;
-				break;
+				if (tib_start >= 0) {
+					tib_end = i + 1;
+					break;
+				} else {
+					fputs("St. Tib's day can't end until after it starts!", stderr);
+					goto eschaton;
+				}
+
 			}
 		}
 	}
