@@ -74,19 +74,6 @@
 #include <string.h>
 #include <time.h>
 
-// work around includes and defines from formerly c.h
-#ifndef ARRAY_SIZE
-	#define ARRAY_SIZE(arr) \
-		(sizeof(arr) / sizeof((arr)[0]) + must_be_array(arr))
-#endif
-
-/* &a[0] degrades to a pointer: a different type from an array */
-#define must_be_array(a) \
-	BUILD_BUG_ON_ZERO( \
-			__builtin_types_compatible_p(__typeof__(a), __typeof__(&a[0])))
-
-#define BUILD_BUG_ON_ZERO(e) (sizeof(struct { int : -!!(e); }))
-
 /* work around hacks for standalone package */
 #define PACKAGE_STRING "standalone"
 
@@ -261,7 +248,7 @@ format(char *buf, const char *fmt, struct disc_time dt)
 #elif defined(__APPLE__)
 				"This Fruit is not the True Fruit of Discord.",
 #endif
-				""};
+				"FNORD!"};
 	/*    fprintf(stderr, "format(%p, \"%s\", dt)\n", buf, fmt);*/
 
 	/* first, find extents of St. Tib's Day area, if defined */
@@ -350,7 +337,7 @@ format(char *buf, const char *fmt, struct disc_time dt)
 					wibble = snarf;
 					break;
 				case '.':
-					wibble = sel(excl, ARRAY_SIZE(excl));
+					wibble = sel(excl, sizeof(excl) / sizeof(excl[0]));
 					break;
 #ifdef KILL_BOB
 				case 'X':
