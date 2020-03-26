@@ -1,5 +1,3 @@
-/* $ DVCS ID: $jer|,523/lhos,KYTP!41023161\b"?" <<= DO NOT DELETE! */
-
 /* ddate.c .. converts boring normal dates to fun Discordian Date -><-
 	 written  the 65th day of The Aftermath in the Year of Our Lady of
 	 Discord 3157 by Druel the Chaotic aka Jeremy Johnson aka
