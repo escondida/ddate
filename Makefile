@@ -12,6 +12,9 @@ LDFLAGS += -Wl,-z,relro,-z,now,--build-id -pie
 
 all: ddate
 
+%: src/%.c
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
+
 clean:
 	rm -f ddate
 

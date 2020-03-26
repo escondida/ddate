@@ -17,13 +17,13 @@ LDFLAGS = -Wl,-z,relro,-z,now,--build-id -pie \
 
 all:V: $TARGS
 
-%:Q: %.o
+%:Q: src/%.o
 	echo $CC -o $target $prereq
 	$CC $CFLAGS $LDFLAGS -o $target $prereq
 
-%.o:Q: %.c
-	echo $CC -c -o $target $stem.c
-	$CC $CFLAGS -c -o $target $stem.c
+src/%.o:Q: src/%.c
+	echo $CC -c -o $target src/$stem.c
+	$CC $CFLAGS -c -o $target src/$stem.c
 
 clean:V:
-	rm -f $TARGS *.o
+	rm -f $TARGS src/*.o
