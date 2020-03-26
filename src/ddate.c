@@ -68,6 +68,7 @@
 
 /*#define PRAISE_BOB 13013*/
 
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -169,7 +170,7 @@ main(int argc, char *argv[])
 		progname = p + 1;
 	}
 
-	srandom(time(NULL));
+	srandom((uint32_t)time(NULL));
 	/* do args here */
 	for (pi = 1; pi < argc; pi++) {
 		switch (argv[pi][0]) {
