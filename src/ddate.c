@@ -58,16 +58,6 @@
 
 /* #define US_FORMAT */
 
-/* If you are ideologically, theologically or otherwise opposed to the
- * Church of the SubGenius and do not wish your copy of ddate(1) to contain
- * code for counting down to X-Day, undefine KILL_BOB */
-
-#define KILL_BOB 13013
-
-/* If you wish ddate(1) to contain SubGenius slogans, define PRAISE_BOB */
-
-/*#define PRAISE_BOB 13013*/
-
 #include <errno.h> /* slogan file opening check */
 #include <stdbool.h> /* print_random_line */
 #include <stdint.h>
@@ -85,7 +75,7 @@
 	#define inline /* foo */
 #endif
 
-#ifdef KILL_BOB
+#ifndef KILL_BOB
 int
 xday_countdown(int yday, int year);
 #endif
@@ -323,7 +313,7 @@ format(char *buf, const char *fmt, struct disc_time dt)
 					sloganeered = true;
 					wibble = sloganeer();
 					break;
-#ifdef KILL_BOB
+#ifndef KILL_BOB
 				case 'X':
 					sprintf(snarf, "%d", xday_countdown(dt.yday, dt.year));
 					wibble = snarf;
@@ -417,7 +407,7 @@ convert(int nday, int nyear)
 	return funkychickens;
 }
 
-#ifdef KILL_BOB
+#ifndef KILL_BOB
 
 /* Code for counting down to X-Day, X-Day being Cfn 40, 3164
  *
