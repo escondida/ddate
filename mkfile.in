@@ -1,7 +1,13 @@
 MKSHELL = rc
 CC = clang
 
-TARGS = ddate
+TARGS = ddate slogans
+
+SLOGANS = \
+	ddata/slogans/discordian \
+	ddata/slogans/miscellaneous \
+	ddata/slogans/neologisms \
+	@EXTRASLOGANS@
 
 # No -Werror for now.
 CFLAGS = -Weverything -g -ggdb -fno-diagnostics-color \
@@ -18,9 +24,15 @@ LDFLAGS = -Wl,-z,relro,-z,now,--build-id -pie \
 
 all:V: $TARGS
 
-%:Q: src/%.o
+slogans: $SLOGANS
+	cat $prereq > $target
+
+ddate:Q: src/ddate.o src/slogans.o
 	echo $CC -o $target $prereq
 	$CC $CFLAGS $LDFLAGS -o $target $prereq
+
+ddate.o: src/ddate.h
+slogans.o: src/ddate.h
 
 src/%.o:Q: src/%.c
 	echo $CC -c -o $target src/$stem.c

@@ -68,11 +68,15 @@
 
 /*#define PRAISE_BOB 13013*/
 
+#include <errno.h> /* slogan file opening check */
+#include <stdbool.h> /* print_random_line */
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
+#include "ddate.h"
 
 /* work around hacks for standalone package */
 #define PACKAGE_STRING "standalone"
@@ -120,13 +124,6 @@ leapp(int i)
 	return (!(DY(i) % 4)) && ((DY(i) % 100) || (!(DY(i) % 400)));
 }
 
-/* select a random string */
-static inline char *
-sel(char **strings, int num)
-{
-	return (strings[random() % num]);
-}
-
 void
 print(struct disc_time, char **); /* old */
 void
@@ -151,12 +148,13 @@ main(int argc, char *argv[])
 	int pi;
 	char *progname, *p;
 
+	srandom((uint32_t)time(NULL));
+
 	progname = argv[0];
 	if ((p = strrchr(progname, '/')) != NULL) {
 		progname = p + 1;
 	}
 
-	srandom((uint32_t)time(NULL));
 	/* do args here */
 	for (pi = 1; pi < argc; pi++) {
 		switch (argv[pi][0]) {
@@ -232,23 +230,6 @@ format(char *buf, const char *fmt, struct disc_time dt)
 						   {"Zaraday", "Bureflux"},
 						   {"Maladay", "Afflux"}};
 
-	char *excl[] = {"Hail Eris!", "All Hail Discordia!", "Kallisti!", "Fnord.",
-					"Or not.", "Wibble.", "Pzat!", "P'tang!", "Frink!",
-#ifdef PRAISE_BOB
-				"Slack!", "Praise \"Bob\"!", "Or kill me.",
-#endif /* PRAISE_BOB */
-				/* randomness, from the Net and other places. Feel free to add
-				   (after checking with the relevant authorities, of course). */
-				"Grudnuk demand sustenance!", "Keep the Lasagna flying!",
-				"You are what you see.", "Or is it?",
-				"This statement is false.", "Lies and slander, sire!",
-				"Hee hee hee!",
-#if defined(linux) || defined(__linux__) || defined(__linux)
-				"Hail Eris, Hack Linux!",
-#elif defined(__APPLE__)
-				"This Fruit is not the True Fruit of Discord.",
-#endif
-				"FNORD!"};
 	/*    fprintf(stderr, "format(%p, \"%s\", dt)\n", buf, fmt);*/
 
 	/* first, find extents of St. Tib's Day area, if defined */
@@ -293,7 +274,9 @@ format(char *buf, const char *fmt, struct disc_time dt)
 			i = tib_end;
 		} else {
 			if (fmt[i] == '%') {
+				bool sloganeered = false;
 				char *wibble = 0, snarf[23];
+
 				switch (fmt[++i]) {
 				case 'A':
 					wibble = day_long[dt.yday % 5];
@@ -337,7 +320,8 @@ format(char *buf, const char *fmt, struct disc_time dt)
 					wibble = snarf;
 					break;
 				case '.':
-					wibble = sel(excl, sizeof(excl) / sizeof(excl[0]));
+					sloganeered = true;
+					wibble = sloganeer();
 					break;
 #ifdef KILL_BOB
 				case 'X':
@@ -346,10 +330,15 @@ format(char *buf, const char *fmt, struct disc_time dt)
 					break;
 #endif /* KILL_BOB */
 				}
+
 				if (wibble) {
 					/*		    fprintf(stderr, "wibble = (%s)\n", wibble);*/
 					strcpy(bufptr, wibble);
 					bufptr += strlen(wibble);
+				}
+
+				if (sloganeered) {
+					free(wibble);
 				}
 			} else {
 				*(bufptr++) = fmt[i];
