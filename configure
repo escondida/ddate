@@ -42,14 +42,18 @@ done
 system=$(uname)
 
 if [ -z "$CC" ]; then
-	CC=clang
+	CC=cc
+elif [ "$CC" = clang ]; then
+	# -Wno-disabled-macro-expansion: warns on fprintf of all things
+	CFLAGS="$CFLAGS -Weverything -fno-diagnostics-color -fsanitize-trap=undefined -Wno-disabled-macro-expansion"
 fi
+
 echo Using c compiler $CC
 
-if [ $system = Linux ]; then
+if [ "$system" = Linux ]; then
 	echo Found operating system Linux
 	slogans=ddata/slogans/linux
-elif [ $system = darwin ]; then
+elif [ "$system" = darwin ]; then
 	echo Found operating system Apple
 	slogans=ddata/slogans/apple
 fi
@@ -65,10 +69,10 @@ fi
 
 sed -e "s,@EXTRASLOGANS@,$slogans," \
 	-e "s,CFLAGS =,CFLAGS = $CFLAGS," \
-	-e "s,CC = clang,CC = $CC," \
+	-e "s,CC = cc,CC = $CC," \
 	mkfile.in > mkfile
 
 sed -e "s,@EXTRASLOGANS@,$slogans," \
 	-e "s,CFLAGS \+= \\\\,CFLAGS += $CFLAGS \\\\," \
-	-e "s,CC \?= clang,CC ?= $CC," \
+	-e "s,CC \?= cc,CC ?= $CC," \
 	Makefile.in > Makefile
