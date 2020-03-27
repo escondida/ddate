@@ -114,12 +114,7 @@ leapp(int i)
 }
 
 void
-print(struct disc_time, char **); /* old */
-void
 format(char *buf, const char *fmt, struct disc_time dt);
-/* read a fortune file */
-int
-load_fortunes(char *fn, char *delim, char **result);
 
 struct disc_time
 convert(int, int);
