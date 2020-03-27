@@ -15,6 +15,7 @@
 #include <unistd.h>
 
 #include "ddate.h"
+#include "util.h"
 
 /* char *get_random_line(FILE *):
 	Returns a mallocked string holding a random slogan.
@@ -22,31 +23,11 @@
 char *
 get_random_line(FILE *);
 
-/* FILE *locate_file(char *fname):
-	Try to find a readable file by the name of fname in the
-	following locations, in order of preference:
-		./
-		$LOCALDIR/data/ddate/
-		$XDG_DATA_HOME/ddate/
-		$HOME/.local/share/ddate/
-	Returns a handle to the file to use, or NULL on error.
-*/
-FILE *
-locate_file(char *fname);
-
 /* uint32_t nlines(FILE *)
 	Returns the number of lines in a file.
 */
 uint32_t
 nlines(FILE *);
-
-/* FILE *try_read_file
-	Attempt to read the file at rpath + midpath + fname.
-	If successful, returns a handle to the file.
-	If unsuccessful, returns NULL.
-*/
-FILE *
-try_read_file(char *rpath, char *midpath, char *fname);
 
 char *
 get_random_line(FILE *f)
@@ -80,28 +61,6 @@ get_random_line(FILE *f)
 	}
 
 	return s;
-}
-
-FILE *
-locate_file(char *fname)
-{
-	FILE *f;
-
-	f = try_read_file(".", "/", fname);
-
-	if (!f && getenv("LOCALDIR")) {
-		f = try_read_file(getenv("LOCALDIR"), "/data/ddate/", fname);
-	}
-
-	if (!f && getenv("XDG_DATA_HOME")) {
-		f = try_read_file(getenv("XDG_DATA_HOME"), "/ddate/", fname);
-	}
-
-	if (!f && getenv("HOME")) {
-		f = try_read_file(getenv("HOME"), "/.local/share/ddate/", fname);
-	}
-
-	return f;
 }
 
 uint32_t
@@ -139,30 +98,4 @@ sloganeer()
 	}
 
 	return slogan;
-}
-
-FILE *
-try_read_file(char *rpath, char *midpath, char *fname)
-{
-	char *fullpath;
-	FILE *f;
-
-	fullpath = calloc(PATH_MAX, sizeof(char));
-	if (!fullpath) {
-		fprintf(stderr, "Error: Out of memory; could not save path to slogans\n");
-		return NULL;
-	}
-
-	if (1 + strlen(rpath) + strlen(midpath) + strlen(fname) > PATH_MAX) {
-		fprintf(stderr, "Error: File path exceeds PATH_MAX: %s%s%s", rpath, midpath, fname);
-		return NULL;
-	}
-
-	snprintf(fullpath, PATH_MAX, "%s%s%s", rpath, midpath, fname);
-
-	/* fopen() returns NULL on failure, which is what we return on failure */
-	f = fopen(fullpath, "r");
-
-	free(fullpath);
-	return f;
 }
