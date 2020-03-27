@@ -40,3 +40,6 @@ src/%.o:Q: src/%.c
 
 clean:V:
 	rm -f $TARGS src/*.o
+
+nuke:V: clean
+	rm -f Makefile mkfile

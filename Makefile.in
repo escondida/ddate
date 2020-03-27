@@ -28,4 +28,7 @@ slogans: $(SLOGANS)
 clean:
 	rm -f ddate
 
-.PHONY: all clean
+nuke: clean
+	rm -f Makefile mkfile
+
+.PHONY: all clean nuke
