@@ -2,6 +2,8 @@
 
 	Print the lovable catchphrases all the kids these days are
 	saying.
+
+	Public functions: ddate.h:/sloganeer(void)
 */
 
 #include <limits.h>
@@ -10,17 +12,41 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "ddate.h"
 
+/* char *get_random_line(FILE *):
+	Returns a mallocked string holding a random slogan.
+*/
 char *
-get_random_line(FILE *file);
+get_random_line(FILE *);
 
-char *
-locate_slogans(void);
+/* FILE *locate_file(char *fname):
+	Try to find a readable file by the name of fname in the
+	following locations, in order of preference:
+		./
+		$LOCALDIR/data/ddate/
+		$XDG_DATA_HOME/ddate/
+		$HOME/.local/share/ddate/
+	Returns a handle to the file to use, or NULL on error.
+*/
+FILE *
+locate_file(char *fname);
 
+/* uint32_t nlines(FILE *)
+	Returns the number of lines in a file.
+*/
 uint32_t
 nlines(FILE *);
+
+/* FILE *try_read_file
+	Attempt to read the file at rpath + midpath + fname.
+	If successful, returns a handle to the file.
+	If unsuccessful, returns NULL.
+*/
+FILE *
+try_read_file(char *rpath, char *midpath, char *fname);
 
 char *
 get_random_line(FILE *f)
@@ -56,25 +82,26 @@ get_random_line(FILE *f)
 	return s;
 }
 
-char *
-locate_slogans()
+FILE *
+locate_file(char *fname)
 {
-	char *fname = "slogans";
-	char *path;
+	FILE *f;
 
-	if (strlen(fname) > PATH_MAX) {
-		return NULL;
+	f = try_read_file(".", "/", fname);
+
+	if (!f && getenv("LOCALDIR")) {
+		f = try_read_file(getenv("LOCALDIR"), "/data/ddate/", fname);
 	}
 
-	path = malloc(strlen(fname) + 1);
-	if (!path) {
-		fprintf(stderr, "Error: Out of memory; could not save path to slogans\n");
-		return NULL;
+	if (!f && getenv("XDG_DATA_HOME")) {
+		f = try_read_file(getenv("XDG_DATA_HOME"), "/ddate/", fname);
 	}
 
-	snprintf(path, strlen(fname) + 1, "%s", fname);
+	if (!f && getenv("HOME")) {
+		f = try_read_file(getenv("HOME"), "/.local/share/ddate/", fname);
+	}
 
-	return path;
+	return f;
 }
 
 uint32_t
@@ -95,31 +122,47 @@ nlines(FILE *f)
 char *
 sloganeer()
 {
-	char *path = 0;
-	char *slogan = NULL;
+	char *slogan;
+	FILE *slogans;
 
-	if (!(path = locate_slogans())) {
-		fprintf(stderr, "Error: could not find file %s\n", path);
-		return 0;
-	}
-
-	FILE *slogans = fopen(path, "r");
-	if (!slogans) {
-		perror("Error");
-		goto cleanup;
+	if (!(slogans = locate_file("slogans"))) {
+		fputs("Error: could not find a slogans file %s\n", stderr);
+		return NULL;
 	}
 
 	if (!(slogan = get_random_line(slogans))) {
 		fputs("Error: could not get random slogan\n", stderr);
-		goto cleanup;
 	}
 
 	if (fclose(slogans) == EOF) {
 		perror("Error");
-		goto cleanup;
 	}
 
-cleanup:
-	free(path);
 	return slogan;
+}
+
+FILE *
+try_read_file(char *rpath, char *midpath, char *fname)
+{
+	char *fullpath;
+	FILE *f;
+
+	fullpath = calloc(PATH_MAX, sizeof(char));
+	if (!fullpath) {
+		fprintf(stderr, "Error: Out of memory; could not save path to slogans\n");
+		return NULL;
+	}
+
+	if (1 + strlen(rpath) + strlen(midpath) + strlen(fname) > PATH_MAX) {
+		fprintf(stderr, "Error: File path exceeds PATH_MAX: %s%s%s", rpath, midpath, fname);
+		return NULL;
+	}
+
+	snprintf(fullpath, PATH_MAX, "%s%s%s", rpath, midpath, fname);
+
+	/* fopen() returns NULL on failure, which is what we return on failure */
+	f = fopen(fullpath, "r");
+
+	free(fullpath);
+	return f;
 }
