@@ -58,8 +58,7 @@
 
 /* #define US_FORMAT */
 
-#include <errno.h> /* slogan file opening check */
-#include <stdbool.h> /* print_random_line */
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
