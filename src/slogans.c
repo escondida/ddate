@@ -2,15 +2,13 @@
 
 	Print the lovable catchphrases all the kids these days are
 	saying.
-
-	Public functions: ddate.h:/sloganeer(void)
 */
 
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "ddate.h"
+#include "slogans.h"
 #include "util.h"
 
 /* char *get_random_line(FILE *):

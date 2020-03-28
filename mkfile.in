@@ -35,8 +35,8 @@ src/%.o:Q: src/%.c
 	echo $CC -c -o $target src/$stem.c
 	$CC $CFLAGS -c -o $target src/$stem.c
 
-src/ddate.o: src/ddate.h
-src/slogans.o: src/ddate.h src/util.h
+src/ddate.o: src/ddate.h src/slogans.h
+src/slogans.o: src/slogans.h src/util.h
 src/util.o: src/util.h
 
 clean:V:

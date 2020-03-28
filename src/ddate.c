@@ -67,6 +67,8 @@
 
 #include "ddate.h"
 
+#include "slogans.h"
+
 /* work around hacks for standalone package */
 #define PACKAGE_STRING "standalone"
 
