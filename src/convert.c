@@ -23,6 +23,13 @@
 ddate_dow
 doy_to_dow(int32_t day);
 
+/* get_holyday()
+	Return the holy day for the given date.
+	Takes an Erisian season and day of the season for arguments.
+*/
+ddate_holyday
+get_holyday(ddate_season s, int32_t day);
+
 /* g2e4real
 	Do the actual work of setting up a ddate struct from a
 	Gregorian year and day of year.
@@ -97,10 +104,36 @@ ddate_greg_to_eris2(struct ddate *dd, int32_t year, int32_t month, int32_t day)
 	return true;
 }
 
+ddate_holyday
+get_holyday(ddate_season s, int32_t d)
+{
+	ddate_holyday h[5][2] = {
+		{MUNGDAY, CHAOFLUX},
+		{MOJODAY, DISCOFLUX},
+		{SYADAY, CONFUFLUX},
+		{ZARADAY, BUREFLUX},
+		{MALADAY, AFFLUX}
+	};
+
+	if (s == ERROR) {
+		return ERRORDAY;
+	}
+
+	if (d == 4) {
+		return h[s][0];
+	} else if (d == 49) {\
+		return h[s][1];
+	} else {
+		return NORMALDAY;
+	}
+}
+
 void
 g2e4real(struct ddate *dd, int32_t year, int32_t day)
 {
 	dd->yold = year_to_dyear(year);
+	dd->season = ERROR;
+	dd->lingananday = false;
 
 	handle_tibs(dd, year, day);
 
@@ -108,6 +141,7 @@ g2e4real(struct ddate *dd, int32_t year, int32_t day)
 		dd->wday = doy_to_dow(dd->day);
 		dd->season = dd->day / SEASON_LEN;
 		dd->sday = dd->day % SEASON_LEN;
+		dd->holyday = get_holyday(dd->season, dd->sday);
 	}
 }
 
@@ -121,6 +155,7 @@ handle_tibs(struct ddate *dd, int32_t year, int32_t day)
 		dd->wday = TIBS;
 		dd->season = CHAOS;
 		dd->sday = TIBSY;
+		dd->holyday = TIBSDY;
 		dd->tibsday = true;
 	} else {
 		dd->tibsday = false;
