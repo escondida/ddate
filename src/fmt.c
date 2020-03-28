@@ -17,7 +17,7 @@ ddate_fmt(const char *fmt, struct ddate dd)
 }
 
 char *
-ddate_fmt_dayname(ddate_dow day, ddate_dow_len len)
+ddate_fmt_dayname(ddate_dow day, ddate_len len)
 {
 	char *daynames[2][6] = {
 		{
@@ -25,10 +25,7 @@ ddate_fmt_dayname(ddate_dow day, ddate_dow_len len)
 			"Prickle-Prickle", "Setting Orange",
 			"St. Tib's Day"
 		},
-		{
-			"SM", "BT", "PD", "PP", "SO",
-			"TIBS"
-		}
+		{"SM", "BT", "PD", "PP", "SO", "TIBS"}
 	};
 
 	if (day == NOTADAY || len == ZERO) {
@@ -37,3 +34,22 @@ ddate_fmt_dayname(ddate_dow day, ddate_dow_len len)
 
 	return daynames[len][day];
 }
+
+char *
+ddate_fmt_season(ddate_season s, ddate_len len)
+{
+	char *seasons[2][5] = {
+		{
+			"Chaos", "Discord", "Confusion",
+			"Bureaucracy", "The Aftermath"
+		},
+		{"Chs", "Dsc", "Cfn", "Bcy", "Afm"}
+	};
+
+	if (s == ERROR) {
+		return NULL;
+	}
+
+	return seasons[len][s];
+}
+

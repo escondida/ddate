@@ -16,4 +16,10 @@ ddate_fmt(const char *fmt, struct ddate dd);
 	Argument: the numerical day of the week
 */
 char *
-ddate_fmt_dayname(ddate_dow day, ddate_dow_len len);
+ddate_fmt_dayname(ddate_dow, ddate_len);
+
+/* ddate_fmt_season()
+	Return the name of the Discordian season, or NULL on error.
+*/
+char *
+ddate_fmt_season(ddate_season, ddate_len);
