@@ -50,6 +50,19 @@ doy_to_dow(int32_t day)
 }
 
 bool
+ddate_greg_to_eris(struct ddate *dd, int32_t year, int32_t day)
+{
+	if (day < 0 || (day > (is_tibsyear(year) ? 365 : 364))) {
+		fprintf(stderr, "Error: invalid day of the year: %d\n", day);
+		return false;
+	}
+
+	g2e4real(dd, year, day);
+
+	return true;
+}
+
+bool
 ddate_greg_to_eris2(struct ddate *dd, int32_t year, int32_t month, int32_t day)
 {
 	int32_t cal[2][12] = {
@@ -87,6 +100,9 @@ g2e4real(struct ddate *dd, int32_t year, int32_t day)
 {
 	dd->yold = year_to_dyear(year);
 
+	/* Date given starts counting at 1, the math starts counting at 0 */
+	day--;
+
 	handle_tibs(dd, year, day);
 
 	if (dd->day != TIBSY) {
@@ -110,12 +126,10 @@ handle_tibs(struct ddate *dd, int32_t year, int32_t day)
 	} else {
 		dd->tibsday = false;
 		if (dd->tibsyear && is_past_tibsday(year, day)) {
-			/* Date given is starts counting at 1, the math starts counting at 0 */
-			dd->day = day - 2;
+			dd->day = day - 1;
 			dd->tibsday = false;
 		} else {
-			/* Date given is starts counting at 1, the math starts counting at 0 */
-			dd->day = day - 1;
+			dd->day = day;
 		}
 	}
 }
