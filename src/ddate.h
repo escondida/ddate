@@ -5,11 +5,11 @@
 
 #pragma once
 
-typedef enum ddate_dow_len {
+typedef enum ddate_len {
 	FULL = 0,
 	ABBRVTD,
 	ZERO
-} ddate_dow_len;
+} ddate_len;
 
 typedef enum ddate_dow {
 	SWEETMORN = 0,

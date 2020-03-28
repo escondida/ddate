@@ -90,7 +90,7 @@ ddate_greg_to_eris2(struct ddate *dd, int32_t year, int32_t month, int32_t day)
 		day += cal[tibs][month];
 	}
 
-	g2e4real(dd, year, day);
+	g2e4real(dd, year, day-1);
 
 	return true;
 }
@@ -99,9 +99,6 @@ void
 g2e4real(struct ddate *dd, int32_t year, int32_t day)
 {
 	dd->yold = year_to_dyear(year);
-
-	/* Date given starts counting at 1, the math starts counting at 0 */
-	day--;
 
 	handle_tibs(dd, year, day);
 
