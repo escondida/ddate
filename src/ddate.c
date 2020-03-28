@@ -44,6 +44,17 @@
 	 FIVE TONS OF FLAX
 */
 
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#include "ddate.h"
+
+#include "slogans.h"
+
 /* configuration options  VVVVV   READ THIS!!! */
 
 /* If you wish ddate(1) to print the date in the same format as Druel's
@@ -57,17 +68,6 @@
  */
 
 /* #define US_FORMAT */
-
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-
-#include "ddate.h"
-
-#include "slogans.h"
 
 /* work around hacks for standalone package */
 #define PACKAGE_STRING "standalone"
