@@ -21,21 +21,30 @@ typedef enum ddate_dow {
 	NOTADAY
 } ddate_dow;
 
+typedef enum ddate_holyday {
+	NORMALDAY = 0,
+	MUNGDAY, CHAOFLUX,
+	SYADAY, DISCOFLUX,
+	ZARADAY, BUREFLUX,
+	MALADAY, AFFLUX
+} ddate_holyday;
+
 typedef enum ddate_season {
-	CHAOS = 0,
+	ERROR = -1,
+	CHAOS,
 	DISCORD,
 	CONFUSION,
 	BUREAUCRACY,
-	AFTERMATH,
-	ERROR
+	AFTERMATH
 } ddate_season;
 
 struct ddate {
 	int32_t yold;
-	int32_t day;
+	int32_t day; /* -5 to 365 */
 	ddate_dow wday;
 	ddate_season season;
-	uint8_t sday; /* 0-73 */
+	int8_t sday; /* -5 to 72 */
 	bool tibsyear:1;
 	bool tibsday:1;
+	int32_t pad:22;
 };
