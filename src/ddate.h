@@ -22,9 +22,10 @@ typedef enum ddate_dow {
 } ddate_dow;
 
 typedef enum ddate_holyday {
-	NORMALDAY = -1,
+	ERRORDAY = -3, NORMALDAY = -2, TIBSDY = -1,
 	MUNGDAY, CHAOFLUX,
-	SYADAY, DISCOFLUX,
+	MOJODAY, DISCOFLUX,
+	SYADAY, CONFUFLUX,
 	ZARADAY, BUREFLUX,
 	MALADAY, AFFLUX
 } ddate_holyday;
@@ -41,10 +42,12 @@ typedef enum ddate_season {
 struct ddate {
 	int32_t yold;
 	int32_t day; /* -5 to 365 */
-	ddate_dow wday;
 	ddate_season season;
-	int8_t sday; /* -5 to 72 */
+	ddate_holyday holyday;
+	ddate_dow wday;
+	int8_t sday; /* -5 to 72 */\
 	bool tibsyear:1;
 	bool tibsday:1;
-	int32_t pad:22;
+	bool lingananday:1;
+	int32_t pad:21;
 };
