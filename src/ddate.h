@@ -22,7 +22,7 @@ typedef enum ddate_dow {
 } ddate_dow;
 
 typedef enum ddate_holyday {
-	NORMALDAY = 0,
+	NORMALDAY = -1,
 	MUNGDAY, CHAOFLUX,
 	SYADAY, DISCOFLUX,
 	ZARADAY, BUREFLUX,
