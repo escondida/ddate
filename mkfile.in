@@ -27,7 +27,7 @@ all:V: $TARGS
 slogans: $SLOGANS
 	cat $prereq > $target
 
-ddate:Q: src/ddate.o src/slogans.o src/util.o
+ddate:Q: src/ddate.o src/slogans.o src/tibs.o src/util.o
 	echo $CC -o $target $prereq
 	$CC $CFLAGS $LDFLAGS -o $target $prereq
 
@@ -37,6 +37,7 @@ src/%.o:Q: src/%.c
 
 src/ddate.o: src/ddate.h src/slogans.h
 src/slogans.o: src/slogans.h src/util.h
+src/tibs.o: src/tibs.h
 src/util.o: src/util.h
 
 clean:V:
