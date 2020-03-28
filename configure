@@ -71,8 +71,3 @@ sed -e "s,@EXTRASLOGANS@,$slogans," \
 	-e "s,CFLAGS =,CFLAGS = $CFLAGS," \
 	-e "s,CC = cc,CC = $CC," \
 	mkfile.in > mkfile
-
-sed -e "s,@EXTRASLOGANS@,$slogans," \
-	-e "s,CFLAGS \+= \\\\,CFLAGS += $CFLAGS \\\\," \
-	-e "s,CC \?= cc,CC ?= $CC," \
-	Makefile.in > Makefile
