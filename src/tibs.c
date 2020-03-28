@@ -10,9 +10,6 @@
 #include "tibs.h"
 
 bool
-is_tibsyear(int32_t year);
-
-bool
 is_past_tibsday(int32_t y, int32_t d)
 {
 	if (is_tibsyear(y) && d > TIBSDAY) {
