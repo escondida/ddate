@@ -22,6 +22,7 @@ find_tibs(const char *fmt, int32_t *tibstart, uint32_t *tibend);
 char *
 fmt_ordinal(int32_t n);
 
+/* Based pretty closely on the original */
 bool
 ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 {
