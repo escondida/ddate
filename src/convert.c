@@ -86,8 +86,10 @@ ddate_greg_to_eris2(struct ddate *dd, int32_t year, int32_t month, int32_t day)
 		return false;
 	}
 
-	while (--month > 0) {
-		day += cal[tibs][month];
+	/* Only add months that have already happened */
+	month--;
+	while (month > 0) {
+		day += cal[tibs][--month];
 	}
 
 	g2e4real(dd, year, day-1);
