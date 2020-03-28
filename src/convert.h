@@ -5,12 +5,15 @@
 
 #pragma once
 
-/* ddate_date_to_dow()
-	Return the member of the enum ddate_dow corresponding to the
-	day of the week.
-
-	Argument: the day of year and the year (so that we can check
-	for St. Tib's Day)
+/* greg_to_eris()
+	Take a Gregorian year and day of year and mash them into a
+	more pleasingly Eristic form.
 */
-ddate_dow
-ddate_date_to_dow(int32_t day, int32_t year);
+bool
+ddate_greg_to_eris(struct ddate *dd, int32_t year, int32_t day);
+
+/* ddate_greg_to_eris2()
+	Like greg_to_eris, but takes a month and day of month argument
+*/
+bool
+ddate_greg_to_eris2(struct ddate *dd, int32_t year, int32_t month, int32_t day);
