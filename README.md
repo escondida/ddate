@@ -12,14 +12,14 @@ item ddate:00001
 ## Okay, haha, seriously, what?
 
 This is a program which converts Gregorian dates into the Erisian calendar,
-as described in the [Principia Discordia: 00034][pd00034].
+as described in the [Principia Discordia: 00034][pd:00034].
 It's very useful.
 Stop looking at me like that.
 
 ## About this version
 
 It all started when I wanted to fix the infamous
-[Saint Tib's Day Bug][bo0tsbug00013]
+[Saint Tib's Day Bug][bo0tsbug:00013]
 in the standalone version of ddate.
 It was easy enough to do,
 but then I also wanted to fiddle with some other things,
@@ -89,12 +89,12 @@ Maybe someone will read it.
 Maybe someone will make a random wisdom file printer.
 
 Finally, of course, if you find a bug, please submit it to
-[the bugtracker][esbug].
+[the bugtracker][ddbug].
 
 ## The Calendar
 
 To see the whole year at a glance,
-please refer directly to the [Principia][pd00034].
+please refer directly to the [Principia][pd:00034].
 Note that only one calendar is necessary:
 every year begins with Sweetmorn, 1st Chaos,
 and ends with Setting Orange, 73rd Aftermath.
@@ -102,12 +102,12 @@ and ends with Setting Orange, 73rd Aftermath.
 ### The Year
 
 Ol' Greg's 2020 CE is YOLD 3186.
-Years of Our Lady Discord are dated from [the original snub][pd00017]
-(and [the next page][pd00018]).
+Years of Our Lady Discord are dated from [the original snub][pd:00017]
+(and [the next page][pd:00018]).
 
 ### Seasons & Saints
 
-You can find a [fuller explanation][pd00039] in the [Principia][pd00040].
+You can find a [fuller explanation][pd:00039] in the [Principia][pd:00040].
 
 1. Chaos: Patron Apostle Hung Mung
 2. Discord: Patron Apostle Dr. Van Van Mojo,
@@ -170,9 +170,9 @@ There are no secret messages in the original markdown, I assure you.
 
 [bo0tsbug00013]: https://github.com/bo0ts/ddate/issues/13
 [ddate:00007]: doc/versions
-[esbug]: https://github.com/escondida/ddate/issues/
-[pd00017]: https://www.principiadiscordia.com/book/24.php
-[pd00018]: https://www.principiadiscordia.com/book/25.php
-[pd00034]: https://www.principiadiscordia.com/book/41.php
-[pd00039]: https://www.principiadiscordia.com/book/46.php
-[pd00040]: https://www.principiadiscordia.com/book/47.php
+[ddbug]: https://github.com/escondida/ddate/issues/
+[pd:00017]: https://www.principiadiscordia.com/book/24.php
+[pd:00018]: https://www.principiadiscordia.com/book/25.php
+[pd:00034]: https://www.principiadiscordia.com/book/41.php
+[pd:00039]: https://www.principiadiscordia.com/book/46.php
+[pd:00040]: https://www.principiadiscordia.com/book/47.php
