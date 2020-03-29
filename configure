@@ -2,10 +2,9 @@
 # Based on the official example for getopt(1) from util-linux
 # /usr/share/doc/util-linux/getopt/getopt-parse.bash
 
-bob=slack
 slogans=""
 
-TEMP=$(getopt -o 'c:d' --long 'cc,discomBOBulate' -n 'configure' -- "$@")
+TEMP=$(getopt -o 'c:' --long 'cc' -n 'configure' -- "$@")
 
 if [ $? -ne 0 ]; then
 	echo 'Terminating...' >&2
@@ -23,17 +22,12 @@ while true; do
 			shift 2
 			continue
 		;;
-		-d | --discomBOBulate)
-			unset bob
-			shift
-			continue
-		;;
 		--)
 			shift
 			break
 		;;
 		*)
-			echo 'Usage: configure [-cd]' >&2
+			echo 'Usage: configure [-c]' >&2
 			exit 1
 		;;
 	esac
@@ -56,15 +50,6 @@ if [ "$system" = Linux ]; then
 elif [ "$system" = darwin ]; then
 	echo Found operating system Apple
 	slogans=ddata/slogans/apple
-fi
-
-if [ -n "$bob" ]; then
-	echo 'Praising "Bob"'
-	CFLAGS="$CFLAGS -DPRAISE_BOB"
-	slogans="$slogans ddata/slogans/subgenius"
-else
-	echo 'Killing "Bob"'
-	CFLAGS="$CFLAGS -DKILL_BOB"
 fi
 
 sed -e "s,@EXTRASLOGANS@,$slogans," \

@@ -7,6 +7,7 @@ SLOGANS = \
 	ddata/slogans/discordian \
 	ddata/slogans/miscellaneous \
 	ddata/slogans/neologisms \
+	ddata/slogans/subgenius \
 	@EXTRASLOGANS@
 
 # No -Werror for now.
