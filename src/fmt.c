@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "bob.h"
 #include "ddate.h"
 #include "fmt.h"
 #include "slogans.h"
@@ -54,6 +55,7 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 			/* See ../ddata/wisdom/yearlength */
 			char *tmp = 0, n2s[16];
 			int8_t max_date = 15;
+			int32_t xyear = 0, xday = 0;
 
 			switch (fmt[++i]) {
 			/* Numbers and ordinal suffixes */
@@ -131,7 +133,20 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 				tmp = sloganeer();
 				break;
 			case 'X':
-				/* TODO: X-Day countdown */
+				xyear = xday_countdown_years(dd.yold);
+				if (snprintf(n2s, max_date+1, "%d", xyear) > max_date+1) {
+					fprintf(stderr, "It's a *really* long time 'til X-Day: %d\n", xyear);
+					return false;
+				}
+				tmp = n2s;
+				break;
+			case 'x':
+				xday = xday_countdown_days(dd.day);
+				if (snprintf(n2s, max_date+1, "%d", xday) > max_date+1) {
+					fprintf(stderr, "It's a *really* long time 'til X-Day: %d\n", xday);
+					return false;
+				}
+				tmp = n2s;
 				break;
 
 			/* Special characters */
