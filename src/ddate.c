@@ -49,7 +49,7 @@ main(int argc, char *argv[])
 				usage(stdout, argv[0]);
 				return EXIT_SUCCESS;
 			case 'v':
-				printf(("%s\n"), progname);
+				printf(("%s-%s\n"), progname, VERSION);
 				return EXIT_SUCCESS;
 			default:
 				usage(stderr, argv[0]);
