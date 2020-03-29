@@ -4,7 +4,7 @@
 
 slogans=""
 
-TEMP=$(getopt -o 'c:' --long 'cc' -n 'configure' -- "$@")
+TEMP=$(getopt -o 'b:c:d:D:hm:p:' --long 'bindir:,cc:,datadir:,docdir:,help,mandir:,prefix:' -n 'configure' -- "$@")
 
 if [ $? -ne 0 ]; then
 	echo 'Terminating...' >&2
@@ -17,8 +17,37 @@ unset TEMP
 
 while true; do
 	case "$1" in
+		-b | --bindir)
+			BINDIR=$2
+			shift 2
+			continue
+		;;
 		-c | --cc)
 			CC=$2
+			shift 2
+			continue
+		;;
+		-d | --datadir)
+			DATADIR=$2
+			shift 2
+			continue
+		;;
+		-D | --docdir)
+			DOCDIR=$2
+			shift 2
+			continue
+		;;
+		-h | --help)
+			cat doc/usage || (echo 'You want help? Run it from the main ddate directory.' >&2; exit 1)
+			exit 0
+		;;
+		-m | --mandir)
+			MANDIR=$2
+			shift 2
+			continue
+		;;
+		-p | --prefix)
+			PREFIX=$2
 			shift 2
 			continue
 		;;
@@ -26,8 +55,8 @@ while true; do
 			shift
 			break
 		;;
-		*)
-			echo 'Usage: configure [-c]' >&2
+		*) # can't actually get here, it seems...
+			cat doc/usage >&2 || echo 'You want help? Run it from the main ddate directory.' >&2
 			exit 1
 		;;
 	esac
@@ -41,7 +70,6 @@ elif [ "$CC" = clang ]; then
 	# -Wno-disabled-macro-expansion: warns on fprintf of all things
 	CFLAGS="$CFLAGS -Weverything -fno-diagnostics-color -fsanitize-trap=undefined -Wno-disabled-macro-expansion"
 fi
-
 echo Using c compiler $CC
 
 if [ "$system" = Linux ]; then
@@ -52,7 +80,32 @@ elif [ "$system" = darwin ]; then
 	slogans=ddata/slogans/apple
 fi
 
-sed -e "s,@EXTRASLOGANS@,$slogans," \
+if [ -z "$PREFIX" ]; then
+	PREFIX=/usr/local
+fi
+if [ -z "$BINDIR" ]; then
+	BINDIR="$PREFIX/bin"
+fi
+if [ -z "$DATADIR" ]; then
+	DATADIR="$PREFIX/share"
+fi
+if [ -z "$DOCDIR" ]; then
+	DOCDIR="$PREFIX/share/doc"
+fi
+if [ -z "$MANDIR" ] ; then
+	MANDIR="$PREFIX/share/man"
+fi
+
+printf 'Using system directories:\nPREFIX=%s\nBINDIR=%s\nDATADIR=%s\nDOCDIR=%s\nMANDIR=%s\n' \
+	$PREFIX $BINDIR $DATADIR $DOCDIR $MANDIR
+
+u sed -e "s,@EXTRASLOGANS@,$slogans," \
 	-e "s,CFLAGS =,CFLAGS = $CFLAGS," \
 	-e "s,CC = cc,CC = $CC," \
+	-e "1i \
+PREFIX = $PREFIX\n\
+BINDIR = $BINDIR\n\
+DATADIR = $DATADIR\n\
+DOCDIR = $DOCDIR\n\
+MANDIR = $MANDIR" \
 	mkfile.in > mkfile

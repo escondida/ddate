@@ -1,0 +1,23 @@
+Usage: configure [opts]
+General Options:
+	-c | -cc cc
+		default: cc
+
+	-h | --help
+		print this help
+
+Installation Options
+	-p | --prefix path
+		default: /usr/local
+
+	-b | --bindir path
+		default: $PREFIX/bin
+
+	-d | --datadir path
+		default: $PREFIX/share
+
+	-D | --docdir path
+		default: $PREFIX/share/doc
+
+	-m | --mandir path
+		default: $PREFIX/share/man
