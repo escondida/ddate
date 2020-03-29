@@ -79,7 +79,7 @@ sloganeer()
 	FILE *slogans;
 
 	if (!(slogans = locate_file("slogans"))) {
-		fputs("Error: could not find a slogans file %s\n", stderr);
+		fputs("Error: could not find a slogans file\n", stderr);
 		return NULL;
 	}
 
