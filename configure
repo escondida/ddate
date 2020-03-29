@@ -62,6 +62,16 @@ while true; do
 	esac
 done
 
+if [ -d .git ]; then
+	VERSION=$(git describe --long | sed 's@^v@@; s@-\(.*\)-@.r\1.@')
+fi
+
+if [ -z "$VERSION" ]; then
+	. ddata/meta/version
+fi
+
+echo Version: $VERSION
+
 system=$(uname)
 
 if [ -z "$CC" ]; then
@@ -99,10 +109,12 @@ fi
 printf 'Using system directories:\nPREFIX=%s\nBINDIR=%s\nDATADIR=%s\nDOCDIR=%s\nMANDIR=%s\n' \
 	$PREFIX $BINDIR $DATADIR $DOCDIR $MANDIR
 
+echo 'munge mkfile.in > mkfile'
 sed -e "s,@EXTRASLOGANS@,$slogans," \
 	-e "s,CFLAGS =,CFLAGS = $CFLAGS," \
 	-e "s,CC = cc,CC = $CC," \
 	-e "1i \
+VERSION = $VERSION\n\
 PREFIX = $PREFIX\n\
 BINDIR = $BINDIR\n\
 DATADIR = $DATADIR\n\
