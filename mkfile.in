@@ -6,6 +6,7 @@ TARGS = ddate slogans
 
 SLOGANS = \
 	ddata/slogans/discordian \
+	ddata/slogans/illuminati \
 	ddata/slogans/miscellaneous \
 	ddata/slogans/neologisms \
 	ddata/slogans/subgenius \
