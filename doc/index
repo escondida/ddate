@@ -1,0 +1,9 @@
+ddate:00005
+
+ddate:
+00001: ../README.md
+00002: ../ddata/slogans/README
+00003: ../ddata/slogans/* (except README)
+00004: ../ddata/wisdom/yearlength
+00005: index
+00006: ../doc/ddate.1
