@@ -33,7 +33,7 @@ waiting for the collapse of civilization, either.
 Nevertheless, the project would not have been possible
 without the original authors' hard work,
 which is by no means to be discounted.
-See also the [version history][
+See also the [version history][ddate:00007]
 
 ### Incompatibilities
 
@@ -169,6 +169,7 @@ don't worry about this section.
 There are no secret messages in the original markdown, I assure you.
 
 [bo0tsbug00013]: https://github.com/bo0ts/ddate/issues/13
+[ddate:00007]: doc/versions
 [esbug]: https://github.com/escondida/ddate/issues/
 [pd00017]: https://www.principiadiscordia.com/book/24.php
 [pd00018]: https://www.principiadiscordia.com/book/25.php

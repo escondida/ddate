@@ -55,7 +55,8 @@ install:V: all
 	install -D -m 644 slogans $DESTDIR$DATADIR/ddate/slogans
 	install -D -m 644 doc/ddate.1 $DESTDIR$MANDIR/man1/ddate.1
 	install -D -m 644 ddata/slogans/README $DESTDIR$DOCDIR/ddate/slogans
-	install -m 644 doc/index README.md $DESTDIR$DOCDIR/ddate
+	install -m 644 doc/index doc/versions README.md \
+			$DESTDIR$DOCDIR/ddate
 
 # Honestly, you shouldn't do this.
 # You ought to have packaged it using your distro's packaging tools.

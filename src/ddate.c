@@ -1,45 +1,4 @@
 /* ddate.c .. converts boring normal dates to fun Discordian Date -><-
-	 written  the 65th day of The Aftermath in the Year of Our Lady of
-	 Discord 3157 by Druel the Chaotic aka Jeremy Johnson aka
-	 mpython@gnu.ai.mit.edu
-		28 Sever St Apt #3
-		Worcester MA 01609
-
-	 and I'm not responsible if this program messes anything up (except your
-	 mind, I'm responsible for that)
-
-	 (k) YOLD 3161 and all time before and after.
-	 Reprint, reuse, and recycle what you wish.
-	 This program is in the public domain.  Distribute freely.  Or not.
-
-	 Majorly hacked, extended and bogotified/debogotified on
-	 Sweetmorn, Bureaucracy 42, 3161 YOLD, by Lee H:. O:. Smith, KYTP,
-	 aka Andrew Bulhak, aka acb@dev.null.org
-
-	 Slightly hackled and crackled by a sweet firey stove on
-	 Boomtime, the 53rd day of Bureaucracy in the YOLD 3179,
-	 by Chaplain Nyan the Wiser, aka Dan Dart, aka ntw@dandart.co.uk
-
-	 and I'm not responsible if this program messes anything up (except your
-	 mind, I'm responsible for that) (and that goes for me as well --lhos)
-
-	 Version history:
-	 Bureflux 3161:      First release of enhanced ddate with format strings
-	 59 Bcy, 3161:       PRAISE_BOB and KILL_BOB options split, other minor
-					   changes.
-	 53 Bcy, 3179:       Fixed gregorian date conversions less than YOLD 1167
-
-	 1999-02-22 Arkadiusz Miskiewicz <misiek@pld.ORG.PL>
-	 - added Native Language Support
-
-	 2000-03-17 Burt Holzman <holzman+ddate@gmail.com>
-	 - added range checks for dates
-
-	 2014-06-07 William Woodruff <william@tuffbizz.com>
-	 - removed gettext dependent locale code
-
-	 15th of Confusion, 3180:
-	 - call out adherents of the wrong fruit
 
 	 FIVE TONS OF FLAX
 */
