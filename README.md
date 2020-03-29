@@ -102,7 +102,8 @@ and ends with Setting Orange, 73rd Aftermath.
 ### The Year
 
 Ol' Greg's 2020 CE is YOLD 3186.
-Years of Our Lady Discord are dated from [the original snub][00017]
+Years of Our Lady Discord are dated from [the original snub][pd00017]
+(and [the next page][pd00018]).
 
 ### Seasons & Saints
 
@@ -169,6 +170,8 @@ There are no secret messages in the original markdown, I assure you.
 
 [bo0tsbug00013]: https://github.com/bo0ts/ddate/issues/13
 [esbug]: https://github.com/escondida/ddate/issues/
+[pd00017]: https://www.principiadiscordia.com/book/24.php
+[pd00018]: https://www.principiadiscordia.com/book/25.php
 [pd00034]: https://www.principiadiscordia.com/book/41.php
 [pd00039]: https://www.principiadiscordia.com/book/46.php
 [pd00040]: https://www.principiadiscordia.com/book/47.php
