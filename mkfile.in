@@ -14,7 +14,7 @@ SLOGANS = \
 
 # No -Werror for now.
 CFLAGS = \
-	-g -ggdb -std=gnu11 \
+	-Werror -g -ggdb -std=gnu11 \
 	-O2 -fPIE -march=native -D_FORTIFY_SOURCE=2 \
 	-fstack-protector-strong --param=ssp-buffer-size=1 -flto \
 	-fsanitize=undefined -fsanitize-trap=undefined \
