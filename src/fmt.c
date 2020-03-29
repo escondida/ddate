@@ -98,6 +98,7 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 				if (dd.holyday < 0) {
 					goto eschaton;
 				}
+				break;
 
 			/* Seasons */
 			case 'S':
