@@ -31,6 +31,8 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 	int32_t tibstart = -1;
 	uint32_t tibend = 0;
 	size_t len = strlen(fmt);
+	/* For bracketing off conditional sections */
+	bool print = true;
 
 	if (dd.tibsday) {
 		if (!find_tibs(fmt, &tibstart, &tibend)) {
@@ -48,7 +50,13 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 			i = tibend;
 		}
 
-		if (fmt[i] != '%') {
+		if (!print) {
+			if (fmt[i] == '%') {
+				if (fmt[++i] == ']') {
+					print = true;
+				}
+			}
+		} else if (fmt[i] != '%') {
 			*bufptr++ = fmt[i];
 		} else {
 			bool sloganeered = false;
@@ -94,10 +102,12 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 					return false;
 				}
 				break;
-			case 'N':
+			case '[':
 				if (dd.holyday < 0) {
-					goto eschaton;
+					print = false;
 				}
+				break;
+			case ']':
 				break;
 
 			/* Seasons */
@@ -180,7 +190,6 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 		}
 	}
 
-eschaton:
 	*bufptr = '\0';
 	return true;
 }
@@ -256,6 +265,7 @@ find_tibs(const char *fmt, int32_t *tibstart, uint32_t *tibend)
 			case 'a':
 			case 'd':
 			case 'e':
+			case 'o':
 				*tibend = j;
 				if (*tibstart < 0) {
 					*tibstart = i;

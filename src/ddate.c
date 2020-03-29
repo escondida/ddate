@@ -67,8 +67,8 @@ main(int argc, char *argv[])
 	struct ddate dd = {0};
 	char *fnord = 0;
 	int32_t optind;
-	char *todayfmt = "Today is %{%W, the %d%o day of %S %} in the YOLD %Y%N%n%tCelebrate %H!";
-	char *otherfmt = "%{%W, %S %d%}, YOLD %Y%N (%H)";
+	char *todayfmt = "Today is %[%H! It's %]%{%W, the %d%o day of %S %} in the YOLD %Y";
+	char *otherfmt = "%[%H, %]%{%W, %d%o %S%}, YOLD %Y";
 	char *progname = argv[0], *p;
 
 	/* Do this here instead of in slogans.c in case we add more randomness */
