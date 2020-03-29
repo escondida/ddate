@@ -97,7 +97,13 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 
 			/* Holydays */
 			case 'H':
-				if (!(tmp = ddate_fmt_holyday(dd.holyday, dd.lingananday))) {
+				if (!(tmp = ddate_fmt_holyday(dd.holyday, false))) {
+					fprintf(stderr, "That's an odd number for a Holyday, %d\n", dd.holyday);
+					return false;
+				}
+				break;
+			case 'h':
+				if (!(tmp = ddate_fmt_holyday(dd.holyday, true))) {
 					fprintf(stderr, "That's an odd number for a Holyday, %d\n", dd.holyday);
 					return false;
 				}
