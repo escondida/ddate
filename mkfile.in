@@ -1,3 +1,4 @@
+DESTDIR = $DESTDIR
 MKSHELL = rc
 CC = cc
 
@@ -29,9 +30,12 @@ all:V: $TARGS
 slogans: $SLOGANS
 	cat $prereq > $target
 
+# It has to have a little sleep at the end because otherwise
+# it's too fast and thinks it needs to go again
 ddate:Q: src/bob.o src/convert.o src/ddate.o src/fmt.o src/slogans.o src/tibs.o src/util.o
 	echo $CC -o $target $prereq
 	$CC $CFLAGS $LDFLAGS -o $target $prereq
+	sleep 1; touch $target
 
 src/%.o:Q: src/%.c
 	echo $CC -c -o $target src/$stem.c
@@ -44,6 +48,24 @@ src/fmt.o: src/bob.h src/ddate.h src/fmt.h src/slogans.h
 src/slogans.o: src/slogans.h src/util.h
 src/tibs.o: src/tibs.h
 src/util.o: src/util.h
+
+install:V: all
+	install -D ddate $DESTDIR$BINDIR/ddate
+	install -D -m 644 slogans $DESTDIR$DATADIR/ddate/slogans
+	install -D -m 644 doc/ddate.1 $DESTDIR$MANDIR/man1/ddate.1
+	install -D -m 644 ddata/slogans/README $DESTDIR$DOCDIR/ddate/slogans
+	install -m 644 doc/index README.md $DESTDIR$DOCDIR/ddate
+
+# Honestly, you shouldn't do this.
+# You ought to have packaged it using your distro's packaging tools.
+uninstall:V:
+	rm -f $DESTDIR$BINDIR/ddate \
+		$DESTDIR$DATADIR/ddate/slogans \
+		$DESTDIR$MANDIR/man1/ddate.1 \
+		$DESTDIR$DOCDIR/ddate/slogans \
+		$DESTDIR$DOCDIR/ddate/*
+	rmdir $DESTDIR$DATADIR/ddate \
+		$DESTDIR$DOCDIR/ddate
 
 clean:V:
 	rm -f $TARGS src/*.o
