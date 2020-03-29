@@ -99,7 +99,7 @@ fi
 printf 'Using system directories:\nPREFIX=%s\nBINDIR=%s\nDATADIR=%s\nDOCDIR=%s\nMANDIR=%s\n' \
 	$PREFIX $BINDIR $DATADIR $DOCDIR $MANDIR
 
-u sed -e "s,@EXTRASLOGANS@,$slogans," \
+sed -e "s,@EXTRASLOGANS@,$slogans," \
 	-e "s,CFLAGS =,CFLAGS = $CFLAGS," \
 	-e "s,CC = cc,CC = $CC," \
 	-e "1i \

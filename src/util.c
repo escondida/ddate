@@ -38,6 +38,12 @@ locate_file(char *fname)
 		f = try_read_file(getenv("HOME"), "/.local/share/ddate/", fname);
 	}
 
+#ifdef DATADIR
+	if (!f) {
+		f = try_read_file(DATADIR, "/ddate/", fname);
+	}
+#endif /* DATADIR */
+
 	return f;
 }
 
