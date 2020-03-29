@@ -1,115 +1,166 @@
 .\" All Rites Reversed.  This file is in the PUBLIC DOMAIN.
 .\" Kallisti.
-.TH DDATE 1 "Bureaucracy 3161" "ddate" "Emperor Norton User Command"
+.TH DDATE 1 "14th Discord, YOLD 3186" "ddate" "Emperor Norton User Command"
 .SH NAME
 ddate \- convert Gregorian dates to Discordian dates
 .SH SYNOPSIS
 .B ddate
+.RI [ -[hv] ]
 .RI [ \fB+\fPformat]
-.RI [ date ]
+.RI [ year month day ]
 .SH DESCRIPTION
+.LP
 .B ddate
 prints the date in Discordian date format.
 .PP
 If called with no arguments,
 .B ddate
 will get the current system date, convert this to the Discordian
-date format and print this on the standard output. Alternatively, a
-Gregorian date may be specified on the command line, in the form of a numerical
-day, month and year.
+date format and print this on the standard output.
+Alternatively, a Gregorian date may be specified on the command line,
+in the form of numerical
+year, month, and day, in that order.
 .PP
+The options are:
+.IP -h
+Print a brief help message
+.IP -v
+Print the version
+.SH DATE FORMATTING
+.LP
 If a format string is specified, the Discordian date will be printed in
 a format specified by the string. This mechanism works similarly to the
 format string mechanism of
 .B date(1),
-only almost completely differently. The fields are:
-.IP %A
-Full name of the day of the week (i.e., Sweetmorn)
-.IP %a
-Abbreviated name of the day of the week (i.e., SM)
-.IP %B
-Full name of the season (i.e., Chaos)
-.IP %b
-Abbreviated name of the season (i.e., Chs)
+only almost completely differently.
+It also operates almost completely differently
+from all other known versions of ddate.
+The fields are:
 .IP %d
 Cardinal number of day in season (i.e., 23)
+.IP %D
+Cardinal number of day in year (i.e., 115)
 .IP %e
-Ordinal number of day in season (i.e., 23rd)
+Random catchphrase, slogan, or piece of doggerel
 .IP %H
-Name of current Holyday, if any
-.IP %N
-Magic code to prevent rest of format from being printed unless today is
-a Holyday.
+Name of current Holyday, if any.
+.IP "%[, %]"
+You are advised to enclose the Holyday name
+and any special Holyday messages in %[ %]
+so you won't have to see your festive greetings on more prosaic days.
 .IP %n
 Newline
+.IP %o
+Ordinal suffix of day in season (i.e., "rd" on 23 Chaos)
+.IP %S
+Full name of the season (i.e., Chaos)
+.IP %s
+Abbreviated name of the season (i.e., Chs)
 .IP %t
 Tab
+.IP %W
+Full name of the day of the week (i.e., Sweetmorn)
+.IP %w
+Abbreviated name of the day of the week (i.e., SM)
 .IP %X
-Number of days remaining until X-Day. (Not valid if the SubGenius options
-are not compiled in.)
+The number of years remaining until X-Day.
+(You will only care about this if you are a Subgenius.)
+.IP %x
+The number of days remaining until the next pre-anniversary of X-Day.
+For a precise X-day countdown, refer to the EXAMPLES section.
 .IP %Y
 The year of our Lady Discord (i.e., 3182)
-.IP %{
-.IP %}
-Used to enclose the part of the string which is to be replaced with the
-words "St. Tib's Day" if the current day is St. Tib's Day.
-.IP %\.
-Try it and see.
+.IP %%
+A percent sign
+.IP "%{, %}"
+Used to enclose the part of the string
+which is to be replaced with the words "St. Tib's Day"
+if the current day is St. Tib's Day.
+Since St. Tib's Day exists out of time
+and accordingly has no day of the season, day of the year, day of the week, ordinal number, etc.,
+you should probably always enclose those things in %{%}.
 .bp
 .SH EXAMPLES
 .nf
 % ddate
 .br
-Sweetmorn, Bureaucracy 42, 3161 YOLD
-.PP
-% ddate +'Today is %{%A, the %e of %B%}, %Y. %N%nCelebrate %H'
+Today is Boomtime, the 14th day of Discord  in the YOLD 3186.
+.LP
+% ddate '+Today is %{%W, the %d%o of %S%}, %Y. %[%n%tCelebrate %H!%]'
 .br
 Today is Sweetmorn, the 42nd of Bureaucracy, 3161.
-.PP
-% ddate +"It's %{%A, the %e of %B%}, %Y. %N%nCelebrate %H" 26 9 1995
+.LP
+% ddate "+It's %{%W, the %d%o of %S%}, %Y. %[%n%tCelebrate %H!%]" 1995 09 26
 .br
 It's Prickle-Prickle, the 50th of Bureaucracy, 3161.
 .br
-Celebrate Bureflux
+	Celebrate Bureflux!
 .PP
-% ddate +"Today's %{%A, the %e of %B%}, %Y. %N%nCelebrate %H" 29 2 1996
+% ddate +"Today's %{%W, the %d%o of %S%}, %Y. %[%nCelebrate %H!%]" 1996 2 29
 .br
 Today's St. Tib's Day, 3162.
+.LP
+% ddate '+We only have %X years & %x days until our alien overlords attack!'
 .br
-
+We only have 6641 years & 99 days until our alien overlords attack!
+.br
 .SH BUGS
-
-Bugs are holy expressions of Her divine confusion. Please report them
+.LP
+Bugs are holy expressions of Her divine confusion.
+Please report them at
+.UR https://github.com/escondida/ddate/issues
+the bug tracker
+.UE
 so that all may exult in them.
-
 .SH NOTE
-
+.LP
 After `X-Day' passed without incident, the Church of the SubGenius
-declared that it had got the year upside down - X-Day is actually in 8661 AD
+declared that it had got the year upside down: X-Day is actually in 8661 AD
 rather than 1998 AD.  Thus, the True X-Day is Cfn 40, 9827.
-
 .SH AUTHOR
-.nh
-Original program by Druel the Chaotic aka Jeremy Johnson (mpython@gnu.ai.mit.edu)
-.br
-Major rewrite by Lee H:. O:. Smith, KYTP, aka Andrew Bulhak (acb@dev.null.org)
-.br
-Gregorian B.C.E. dates fixed by Chaplain Nyan the Wiser, aka Dan Dart (ntw@dandart.co.uk)
-.br
+.IP •
+Original program by
+.MT mpython@gnu.ai.mit.edu
+Druel the Chaotic aka Jeremy Johnson
+.ME
+.IP •
+Major rewrite by
+.MT acb@dev.null.org
+Lee H:. O:. Smith, KYTP, aka Andrew Bulhak
+.ME
+.IP •
+Gregorian B.C.E. dates fixed by
+.MT ntw@dandart.co.uk
+Chaplain Nyan the Wiser, aka Dan Dart
+.ME
+.IP •
+Complete rewrite by
+.MT escondida@iff.ink
+Detective-Philosopher 5th Class Escondida the Not Very Well Hidden, a.k.a. Ivy Foster
+.ME
+.IP •
 Five tons of flax.
-
 .SH DISTRIBUTION POLICY
-
+.LP
 Public domain. All rites reversed.
-
 .SH SEE ALSO
-
-date(1),
-.br
-http://www.subgenius.com/
-.br
+.IP •
 Malaclypse the Younger,
-.I "Principia Discordia, Or How I Found Goddess And What I Did To Her When I Found Her"
-
+.I "Principia Discordia, Or How I Found Goddess And What I Did To Her When I Found Her",
+.IP •
+Omar Khayyam Ravenhurst,
+.I "The Honest Book of Truth"
+(if you can find it),
+.IP •
+date(1),
+.IP •
+.UR http://www.subgenius.com/
+The Subgenius Foundation
+.UE
+.IP •
+Your pineal gland
 .SH AVAILABILITY
-The ddate command is available from https://github.com/bo0ts/ddate.
+The ddate command is available from
+.UR https://github.com/escondida/ddate
+its github page
+.UE .
