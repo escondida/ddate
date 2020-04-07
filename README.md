@@ -64,11 +64,8 @@ it will only accept the format year month day.
 
 ## Building
 
-You will need mk, from plan9port, to build this.
-
-	./configure [-c clang] [--prefix /usr]
-	mk
-	mk [DESTDIR=./pkg] install
+	make [PREFIX=/usr]
+	make [PREFIX=/usr] [DESTDIR=pkg] install
 
 ## Helping out
 
