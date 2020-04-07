@@ -165,7 +165,7 @@ If you're viewing the HTMLized version of this,
 don't worry about this section.
 There are no secret messages in the original markdown, I assure you.
 
-[bo0tsbug00013]: https://github.com/bo0ts/ddate/issues/13
+[bo0tsbug:00013]: https://github.com/bo0ts/ddate/issues/13
 [ddate:00007]: doc/versions
 [ddbug]: https://github.com/escondida/ddate/issues/
 [pd:00017]: https://www.principiadiscordia.com/book/24.php
