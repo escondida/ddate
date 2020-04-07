@@ -1,5 +1,6 @@
 CC ?= cc
 PREFIX ?= /usr/local
+BINDIR ?= $(PREFIX)/bin
 DATADIR ?= $(PREFIX)/share
 DOCDIR ?= $(DATADIR)/doc
 MANDIR ?= $(DATADIR)/man
@@ -57,9 +58,9 @@ CFLAGS += \
 
 LDFLAGS += -Wl,-z,relro,-z,now,--build-id -pie
 
-all: $(TARGS)
+all: flags $(TARGS)
 
-ddate: flags $(OBJS)
+ddate: $(OBJS)
 	@echo $(CC) -o $@ $^
 	@$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
@@ -76,7 +77,7 @@ flags:
 
 -include $(DEPS)
 
-install: all
+install: $(TARGS)
 	install -D ddate $(DESTDIR)$(BINDIR)/ddate
 	install -D -m 644 slogans $(DESTDIR)$(DATADIR)/ddate/slogans
 	install -D -m 644 doc/ddate.1 $(DESTDIR)$(MANDIR)/man1/ddate.1
