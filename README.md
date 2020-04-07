@@ -33,7 +33,7 @@ waiting for the collapse of civilization, either.
 Nevertheless, the project would not have been possible
 without the original authors' hard work,
 which is by no means to be discounted.
-See also the [version history][ddate:00007]
+See also the [version history][ddate:00007].
 
 ### Incompatibilities
 
@@ -52,7 +52,7 @@ $LOCALDIR/data/ddate,
 $XDG_DATA_HOME/ddate,
 $HOME/.local/share/ddate,
 $DATADIR/ddate
-(DATADIR = $PREFIX/share by default)
+(DATADIR = $PREFIX/share by default).
 
 - Other versions let you choose at compile-time
 between providing the date arguments
@@ -75,7 +75,7 @@ Or write it if it still hasn't been written.
 If you'd like to add to this program but aren't into programming,
 consider adding new slogans to ddata/slogans.
 If you introduce an entirely new class of slogans,
-please make a new file to contain them and add it to mkfile.in.
+please make a new file to contain them and add it to the Makefile.
 
 Note that the slogans should be relatively short,
 and *must* be on a single line.
