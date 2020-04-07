@@ -23,26 +23,29 @@ FILE *
 locate_file(char *fname)
 {
 	FILE *f;
+	char *where;
 
 	f = try_read_file(".", "/", fname);
 
-	if (!f && getenv("LOCALDIR")) {
+	if (!f && (where = getenv("LOCALDIR"))) {
 		f = try_read_file(getenv("LOCALDIR"), "/data/ddate/", fname);
 	}
 
-	if (!f && getenv("XDG_DATA_HOME")) {
-		f = try_read_file(getenv("XDG_DATA_HOME"), "/ddate/", fname);
+	if (!f && (where = getenv("HOME"))) {
+		f = try_read_file(where, "/local/data/ddate/", fname);
 	}
 
-	if (!f && getenv("HOME")) {
+	if (!f && (where = getenv("XDG_DATA_HOME"))) {
+		f = try_read_file(where, "/ddate/", fname);
+	}
+
+	if (!f && (where = getenv("HOME"))) {
 		f = try_read_file(getenv("HOME"), "/.local/share/ddate/", fname);
 	}
 
-#ifdef DATADIR
 	if (!f) {
 		f = try_read_file(DATADIR, "/ddate/", fname);
 	}
-#endif /* DATADIR */
 
 	return f;
 }

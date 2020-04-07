@@ -49,6 +49,7 @@ in a file called "slogans" in the following places,
 in order of preference:
 the current working directory,
 $LOCALDIR/data/ddate,
+$HOME/local/data/ddate,
 $XDG_DATA_HOME/ddate,
 $HOME/.local/share/ddate,
 $DATADIR/ddate
