@@ -13,13 +13,6 @@ else
 VERSION = unknown
 endif
 
-ifeq ($(CC), clang)
-# -Wno-disable-macro-expansion: gotta have my fprintf
-CFLAGS += \
-	-Weverything -fno-diagnostics-color \
-	-fsanitize-trap=undefined -Wno-disabled-macro-expansion
-endif
-
 TARGS = ddate slogans
 
 SRCS = src/bob.c \
@@ -46,6 +39,13 @@ ifeq ($(shell uname), Linux)
 SLOGANS += ddata/slogans/linux
 else ifeq ($(shell uname), darwin)
 SLOGANS += ddata/slogans/apple
+endif
+
+ifeq ($(CC), clang)
+# -Wno-disable-macro-expansion: gotta have my fprintf
+CFLAGS += \
+	-Weverything -fno-diagnostics-color \
+	-fsanitize-trap=undefined -Wno-disabled-macro-expansion
 endif
 
 CFLAGS += \
