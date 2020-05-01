@@ -68,14 +68,14 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 			switch (fmt[++i]) {
 			/* Numbers and ordinal suffixes */
 			case 'd':
-				if (snprintf(n2s, max_date+1, "%d", dd.sday+1) > max_date+1) {
+				if (snprintf(n2s, (size_t)max_date+1, "%d", dd.sday+1) > max_date+1) {
 					fprintf(stderr, "%d...is a pretty large value for the day of the season\n", dd.sday+1);
 					return false;
 				}
 				tmp = n2s;
 				break;
 			case 'D':
-				if (snprintf(n2s, max_date+1, "%d", dd.day+1) > max_date+1) {
+				if (snprintf(n2s, (size_t)max_date+1, "%d", dd.day+1) > max_date+1) {
 					fprintf(stderr, "%d...is a pretty large value for the day of the year\n", dd.day+1);
 					return false;
 				}
@@ -88,7 +88,7 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 				}
 				break;
 			case 'Y':
-				if (snprintf(n2s, max_date+1, "%d", dd.yold) > max_date+1) {
+				if (snprintf(n2s, (size_t)max_date+1, "%d", dd.yold) > max_date+1) {
 					fprintf(stderr, "%d...is a pretty large value for the year\n", dd.yold);
 					return false;
 				}
@@ -119,13 +119,13 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 			/* Seasons */
 			case 'S':
 				if (!(tmp = ddate_fmt_season(dd.season, FULL))) {
-					fprintf(stderr, "This is downright unseasonable\n", dd.season);
+					fputs("This is downright unseasonable\n", stderr);
 					return false;
 				}
 				break;
 			case 's':
 				if (!(tmp = ddate_fmt_season(dd.season, ABBRVTD))) {
-					fprintf(stderr, "This is downright unseasonable\n", dd.season);
+					fputs("This is downright unseasonable\n", stderr);
 					return false;
 				}
 				break;
@@ -151,7 +151,7 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 				break;
 			case 'X':
 				xyear = xday_countdown_years(dd.yold);
-				if (snprintf(n2s, max_date+1, "%d", xyear) > max_date+1) {
+				if (snprintf(n2s, (size_t)max_date+1, "%d", xyear) > max_date+1) {
 					fprintf(stderr, "It's a *really* long time 'til X-Day: %d\n", xyear);
 					return false;
 				}
@@ -159,7 +159,7 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 				break;
 			case 'x':
 				xday = xday_countdown_days(dd.day);
-				if (snprintf(n2s, max_date+1, "%d", xday) > max_date+1) {
+				if (snprintf(n2s, (size_t)max_date+1, "%d", xday) > max_date+1) {
 					fprintf(stderr, "It's a *really* long time 'til X-Day: %d\n", xday);
 					return false;
 				}

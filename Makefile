@@ -5,6 +5,8 @@ DATADIR ?= $(PREFIX)/share
 DOCDIR ?= $(DATADIR)/doc
 MANDIR ?= $(DATADIR)/man
 
+DEBUG ?= false
+
 ifeq ($(shell test -d .git && echo true), true)
 VERSION != git describe --long | sed 's@-\(.*\)-@.r\1.@'
 else ifeq ($(shell test -e ddata/meta/version && echo true), true)
@@ -48,11 +50,18 @@ CFLAGS += \
 	-fsanitize-trap=undefined -Wno-disabled-macro-expansion
 endif
 
+ifeq ($(DEBUG), true)
+# Leave -g in always-used CFLAGS: the packager or user can strip them
+#out if they want.
+CFLAGS += -O0 -DDEBUG
+else
+CFLAGS += -O2 -D_FORTIFY_SOURCE=2
+endif
+
 CFLAGS += \
 	-Werror -g -ggdb -std=gnu11 \
-	-O2 -fPIE -march=native -D_FORTIFY_SOURCE=2 \
-	-fstack-protector-strong --param=ssp-buffer-size=1 -flto \
-	-fsanitize=undefined \
+	-fPIE -march=native -fstack-protector-strong \
+	--param=ssp-buffer-size=1 -flto -fsanitize=undefined \
 	-DPREFIX=\"$(PREFIX)\" -DDATADIR=\"$(DATADIR)\" \
 	-DVERSION=\"$(VERSION)\"
 
