@@ -70,7 +70,7 @@ ddate_greg_to_eris(struct ddate *dd, int32_t year, int32_t day)
 }
 
 bool
-ddate_greg_to_eris2(struct ddate *dd, int32_t year, int32_t month, int32_t day)
+ddate_greg_ymd_to_eris(struct ddate *dd, int32_t year, int32_t month, int32_t day)
 {
 	int32_t cal[2][12] = {
 		{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},

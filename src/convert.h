@@ -12,8 +12,8 @@
 bool
 ddate_greg_to_eris(struct ddate *dd, int32_t year, int32_t day);
 
-/* ddate_greg_to_eris2()
+/* ddate_greg_ymd_to_eris()
 	Like greg_to_eris, but takes a month and day of month argument
 */
 bool
-ddate_greg_to_eris2(struct ddate *dd, int32_t year, int32_t month, int32_t day);
+ddate_greg_ymd_to_eris(struct ddate *dd, int32_t year, int32_t month, int32_t day);

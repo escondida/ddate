@@ -73,7 +73,7 @@ thud:
 		int32_t larry = atoi(argv[optind + 1]);
 		int32_t curly = atoi(argv[optind + 2]);
 
-		if (!ddate_greg_to_eris2(&dd, moe, larry, curly)) {
+		if (!ddate_greg_ymd_to_eris(&dd, moe, larry, curly)) {
 			fputs("Invalid date\n", stderr);
 			return EXIT_FAILURE;
 		}
