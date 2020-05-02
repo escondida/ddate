@@ -16,6 +16,11 @@
  * 9827 will need to update this code.
 */
 
+/* X-Day: the 40th day of the Season of Confusion, YOLD 9827 */
+#define XYEAR 9827
+/* -1, since in the code day 0 == 1st Chaos */
+#define XDAY 185
+
 /* xday_countdown_days()
 	Note that this is the number of days between the calendar date
 	of the given day and xday, *NOT* taking years into account. To
