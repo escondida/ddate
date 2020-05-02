@@ -1,6 +1,17 @@
 /* ddate.h
 
 	Public API for formatting Discordian dates
+
+	If you're going to do anything...well, "useful" is a strong
+	word, but you know what I mean...with this, you probably want
+	to include fmt.h as well: ddate_fmt() is probably the function
+	you want.
+
+	If you want to get really weird, convert.h will get you
+	ddate_greg_to_eris (for when you have the year and day of
+	year--as, for instance, from localtime(3)) and
+	ddate_greg_ymd_to_eris (for when you have the year, month, and
+	day)
 */
 
 #pragma once
