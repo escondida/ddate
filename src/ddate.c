@@ -100,8 +100,9 @@ thud:
 	}
 
 	char buf[1024];
-	if (!ddate_fmt(buf, sizeof(buf) / sizeof(buf[0]), dd, fnord)) {
-		return EXIT_FAILURE;
+	if ((err = ddate_fmt(buf, sizeof(buf) / sizeof(buf[0]), dd, fnord))
+			!= DDATE_ERROR_NONE) {
+		goto aftermath;
 	}
 
 	puts(buf);
@@ -118,15 +119,15 @@ void
 handle_error(ddate_error err)
 {
 	switch(err) {
-	case DDATE_ERROR_NONE:
+	case DDATE_ERROR_NONE: /* How did we get here? */
 		break;
 	case DDATE_ERROR_HDAY:
 		fputs("Error: invalid holyday\n", stderr);
 		break;
 	case DDATE_ERROR_INVALID_FMT:
-	case DDATE_ERROR_INVALID_GREGDAY:
+		fputs("Error: invalid format string. Please refer to the manual or your pineal gland.\n", stderr);
 		break;
-	case DDATE_ERROR_INVALID_GREGDAY_OF_MONTH:
+	case DDATE_ERROR_INVALID_GREGDAY:
 		fputs("Error: invalid Gregorian day of the month\n", stderr);
 		break;
 	case DDATE_ERROR_INVALID_GREGMONTH:
@@ -136,14 +137,19 @@ handle_error(ddate_error err)
 		fputs("Error: there is no year 0 in the Gregorian calendar\n", stderr);
 		break;
 	case DDATE_ERROR_ORDINAL:
+		fputs("This whole system is out of ordinal!\n", stderr);
+		break;
 	case DDATE_ERROR_SDAY:
+		fputs("Error: invalid day of the Erisian season\n", stderr);
 		break;
 	case DDATE_ERROR_SEASON:
 		fputs("Error: invalid Erisian season\n", stderr);
 		break;
 	case DDATE_ERROR_SLOGAN:
-	case DDATE_ERROR_SLOGAN_FILE:
+		fputs("Error printing slogan\n", stderr);
+		break;
 	case DDATE_ERROR_TIBS:
+		fputs("Error formatting festive St. Tib's Day message\n", stderr);
 		break;
 	case DDATE_ERROR_UNKNOWN:
 		fputs("An unknown error has occurred, somehow. Hail Eris!\n", stderr);
@@ -151,11 +157,19 @@ handle_error(ddate_error err)
 	case DDATE_ERROR_USAGE: /* Handled in main so usage() can use argv[0] */
 		break;
 	case DDATE_ERROR_WDAY:
+		fputs("Error: invalid day of the Erisian week\n", stderr);
+		break;
 	case DDATE_ERROR_XDAY:
+		fputs("Error: Xist interference prevents calculating days to the pre-anniversary of X-Day\n", stderr);
+		break;
 	case DDATE_ERROR_XYEAR:
+		fputs("Error: Xist interference prevents calculating years to X-Day\n", stderr);
 		break;
 	case DDATE_ERROR_YDAY:
 		fputs("Error: invalid day of year\n", stderr);
+		break;
+	case DDATE_ERROR_YEAR:
+		fputs("Error: year way too far in the future to worry about right now\n", stderr);
 		break;
 	}
 }

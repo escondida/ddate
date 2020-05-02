@@ -24,7 +24,7 @@ char *
 fmt_ordinal(int32_t n);
 
 /* Based pretty closely on the original */
-bool
+ddate_error
 ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 {
 	char *bufptr = buf;
@@ -37,8 +37,7 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 
 	if (dd.tibsday) {
 		if (!find_tibs(fmt, &tibstart, &tibend)) {
-			fputs("Error formatting festive St. Tib's Day message\n", stderr);
-			return false;
+			return DDATE_ERROR_TIBS;
 		}
 	}
 
@@ -76,28 +75,24 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 			/* Numbers and ordinal suffixes */
 			case 'd':
 				if (snprintf(n2s, (size_t)max_date+1, "%d", dd.sday+1) > max_date+1) {
-					fprintf(stderr, "%d...is a pretty large value for the day of the season\n", dd.sday+1);
-					return false;
+					return DDATE_ERROR_SDAY;
 				}
 				tmp = n2s;
 				break;
 			case 'D':
 				if (snprintf(n2s, (size_t)max_date+1, "%d", dd.day+1) > max_date+1) {
-					fprintf(stderr, "%d...is a pretty large value for the day of the year\n", dd.day+1);
-					return false;
+					return DDATE_ERROR_YDAY;
 				}
 				tmp = n2s;
 				break;
 			case 'o':
 				if (!(tmp = fmt_ordinal(dd.sday+1))) {
-					fputs("This whole system is out of ordinal!\n", stderr);
-					return false;
+					return DDATE_ERROR_ORDINAL;
 				}
 				break;
 			case 'Y':
 				if (snprintf(n2s, (size_t)max_date+1, "%d", dd.yold) > max_date+1) {
-					fprintf(stderr, "%d...is a pretty large value for the year\n", dd.yold);
-					return false;
+					return DDATE_ERROR_YEAR;
 				}
 				tmp = n2s;
 				break;
@@ -105,14 +100,12 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 			/* Holydays */
 			case 'H':
 				if (!(tmp = ddate_fmt_holyday(dd.holyday, false))) {
-					fprintf(stderr, "That's an odd number for a Holyday, %d\n", dd.holyday);
-					return false;
+					return DDATE_ERROR_HDAY;
 				}
 				break;
 			case 'h':
 				if (!(tmp = ddate_fmt_holyday(dd.holyday, true))) {
-					fprintf(stderr, "That's an odd number for a Holyday, %d\n", dd.holyday);
-					return false;
+					return DDATE_ERROR_HDAY;
 				}
 				break;
 			case '[':
@@ -126,49 +119,45 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 			/* Seasons */
 			case 'S':
 				if (!(tmp = ddate_fmt_season(dd.season, FULL))) {
-					fputs("This is downright unseasonable\n", stderr);
-					return false;
+					return DDATE_ERROR_SEASON;
 				}
 				break;
 			case 's':
 				if (!(tmp = ddate_fmt_season(dd.season, ABBRVTD))) {
-					fputs("This is downright unseasonable\n", stderr);
-					return false;
+					return DDATE_ERROR_SEASON;
 				}
 				break;
 
 			/* Days of the week */
 			case 'W':
 				if (!(tmp = ddate_fmt_dayname(dd.wday, FULL))) {
-					fprintf(stderr, "What day is it, boy? WHAT DAY IS IT? %d\n", dd.wday);
-					return false;
+					return DDATE_ERROR_WDAY;
 				}
 				break;
 			case 'w':
 				if (!(tmp = ddate_fmt_dayname(dd.wday, ABBRVTD))) {
-					fprintf(stderr, "What day is it, boy? WHAT DAY IS IT? %d\n", dd.wday);
-					return false;
+					return DDATE_ERROR_WDAY;
 				}
 				break;
 
 			/* Ranting and raving */
 			case 'e':
 				sloganeered = true;
-				tmp = ddate_sloganeer();
+				if (!(tmp = ddate_sloganeer())) {
+					return DDATE_ERROR_SLOGAN;
+				}
 				break;
 			case 'X':
 				xyear = xday_countdown_years(dd.yold);
 				if (snprintf(n2s, (size_t)max_date+1, "%d", xyear) > max_date+1) {
-					fprintf(stderr, "It's a *really* long time 'til X-Day: %d\n", xyear);
-					return false;
+					return DDATE_ERROR_XYEAR;
 				}
 				tmp = n2s;
 				break;
 			case 'x':
 				xday = xday_countdown_days(dd.day);
 				if (snprintf(n2s, (size_t)max_date+1, "%d", xday) > max_date+1) {
-					fprintf(stderr, "It's a *really* long time 'til X-Day: %d\n", xday);
-					return false;
+					return DDATE_ERROR_XDAY;
 				}
 				tmp = n2s;
 				break;
@@ -191,8 +180,7 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 				break;
 
 			default:
-				fprintf(stderr, "Error: unknown format specifier \"%%%c\"\n", fmt[i]);
-					return false;
+				return DDATE_ERROR_INVALID_FMT;
 			}
 
 			if (tmp) {
@@ -213,7 +201,7 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 		buf[bufsize-1] = '\0';
 	}
 
-	return true;
+	return DDATE_ERROR_NONE;
 }
 
 char *

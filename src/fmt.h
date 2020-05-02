@@ -1,11 +1,14 @@
 /* fmt.h
+
+	The actual formatting takes place here. You most likely want
+	ddate_fmt, unless you're writing a formatter of your own.
 */
 
 /* ddate_fmt()
 	Format a Discordian date (and sundry other nonsense).
 	The formatted string is saved to *buf.
 */
-bool
+ddate_error
 ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt);
 
 /* ddate_fmt_dayname()

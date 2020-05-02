@@ -82,7 +82,7 @@ ddate_greg_ymd_to_eris(struct ddate *dd, int32_t year, int32_t month, int32_t da
 	}
 
 	if (day < 1 || day > cal[tibs][month-1]) {
-		return DDATE_ERROR_INVALID_GREGDAY_OF_MONTH;
+		return DDATE_ERROR_INVALID_GREGDAY;
 	}
 
 	/* Only add months that have already happened */
