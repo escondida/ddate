@@ -294,7 +294,9 @@ find_tibs(const char *fmt, int32_t *tibstart, uint32_t *tibend)
 				}
 				break;
 			case '{':
-				*tibstart = i;
+				if (*tibstart < 0) {
+					*tibstart = i;
+				}
 				break;
 			case '}':
 				if (*tibstart >= 0) {
