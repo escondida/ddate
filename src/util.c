@@ -64,6 +64,7 @@ try_read_file(char *rpath, char *midpath, char *fname)
 
 	if (1 + strlen(rpath) + strlen(midpath) + strlen(fname) > PATH_MAX) {
 		fprintf(stderr, "Error: File path exceeds PATH_MAX: %s%s%s", rpath, midpath, fname);
+		free(fullpath);
 		return NULL;
 	}
 
