@@ -43,6 +43,10 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 	}
 
 	for (uint32_t i = 0; i < len; i++) {
+		if (written >= bufsize) {
+			break;
+		}
+
 		/* i == tibstart if & only if it's St. Tib's Day; otherwise it remains -1 */
 		if ((int32_t)i == tibstart) {
 			char *tibmsg = "St. Tib's Day";
@@ -60,6 +64,7 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 			}
 		} else if (fmt[i] != '%') {
 			*bufptr++ = fmt[i];
+			written++;
 		} else {
 			bool sloganeered = false;
 			/* See ../ddata/wisdom/yearlength */
@@ -171,12 +176,15 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 			/* Special characters */
 			case 'n':
 				*bufptr++ = '\n';
+				written++;
 				break;
 			case 't':
 				*bufptr++ = '\t';
+				written++;
 				break;
 			case '%':
 				*bufptr++ = '%';
+				written++;
 				break;
 			case '{':
 			case '}':
@@ -188,7 +196,7 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 			}
 
 			if (tmp) {
-				strncpy(bufptr, tmp, bufsize - written);
+				strncpy(bufptr, tmp, bufsize - 1 - written);
 				bufptr += strlen(tmp);
 				written += strlen(tmp);
 			}
@@ -199,7 +207,12 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 		}
 	}
 
-	*bufptr = '\0';
+	if (written < bufsize) {
+		*bufptr = '\0';
+	} else {
+		buf[bufsize-1] = '\0';
+	}
+
 	return true;
 }
 

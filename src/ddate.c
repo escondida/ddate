@@ -94,7 +94,7 @@ thud:
 	}
 
 	char buf[1024];
-	if (!ddate_fmt(buf, sizeof(buf), dd, fnord)) {
+	if (!ddate_fmt(buf, sizeof(buf) / sizeof(buf[0]), dd, fnord)) {
 		return EXIT_FAILURE;
 	}
 
