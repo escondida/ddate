@@ -31,6 +31,7 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 	int32_t tibstart = -1;
 	uint32_t tibend = 0;
 	size_t len = strlen(fmt);
+	size_t written = 0;
 	/* For bracketing off conditional sections */
 	bool print = true;
 
@@ -45,8 +46,9 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 		/* i == tibstart if & only if it's St. Tib's Day; otherwise it remains -1 */
 		if ((int32_t)i == tibstart) {
 			char *tibmsg = "St. Tib's Day";
-			strncpy(bufptr, tibmsg, bufsize - i);
+			strncpy(bufptr, tibmsg, bufsize - written);
 			bufptr += strlen(tibmsg);
+			written += strlen(tibmsg);
 			i = tibend;
 		}
 
@@ -186,8 +188,9 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 			}
 
 			if (tmp) {
-				strncpy(bufptr, tmp, bufsize - i);
+				strncpy(bufptr, tmp, bufsize - written);
 				bufptr += strlen(tmp);
+				written += strlen(tmp);
 			}
 
 			if (sloganeered) {
