@@ -52,16 +52,16 @@ endif
 
 ifeq ($(DEBUG), true)
 # Leave -g in always-used CFLAGS: the packager or user can strip them
-#out if they want.
-CFLAGS += -O0 -DDEBUG
+# out if they want.
+CFLAGS += -O0 -DDEBUG -fsanitize=address -fsanitize=undefined
 else
 CFLAGS += -O2 -D_FORTIFY_SOURCE=2
 endif
 
 CFLAGS += \
-	-Werror -g -ggdb -std=gnu11 \
+	-Werror -ggdb -std=gnu11 \
 	-fPIE -march=native -fstack-protector-strong \
-	--param=ssp-buffer-size=1 -flto -fsanitize=undefined \
+	--param=ssp-buffer-size=1 -flto \
 	-DPREFIX=\"$(PREFIX)\" -DDATADIR=\"$(DATADIR)\" \
 	-DVERSION=\"$(VERSION)\"
 
