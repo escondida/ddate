@@ -28,7 +28,7 @@ locate_file(char *fname)
 	f = try_read_file(".", "/", fname);
 
 	if (!f && (where = getenv("LOCALDIR"))) {
-		f = try_read_file(getenv("LOCALDIR"), "/data/ddate/", fname);
+		f = try_read_file(where, "/data/ddate/", fname);
 	}
 
 	if (!f && (where = getenv("HOME"))) {
@@ -40,7 +40,7 @@ locate_file(char *fname)
 	}
 
 	if (!f && (where = getenv("HOME"))) {
-		f = try_read_file(getenv("HOME"), "/.local/share/ddate/", fname);
+		f = try_read_file(where, "/.local/share/ddate/", fname);
 	}
 
 	if (!f) {
