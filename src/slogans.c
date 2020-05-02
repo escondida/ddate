@@ -29,7 +29,7 @@ get_random_line(FILE *f)
 	char *s;
 	uint32_t len = nlines(f);
 
-	if (len > RAND_MAX) {
+	if (len > RAND_MAX || len <= 0) {
 		return NULL;
 	}
 	rewind(f);
