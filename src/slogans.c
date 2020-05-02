@@ -73,7 +73,7 @@ nlines(FILE *f)
 }
 
 char *
-sloganeer()
+ddate_sloganeer()
 {
 	char *slogan;
 	FILE *slogans;

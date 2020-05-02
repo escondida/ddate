@@ -6,7 +6,7 @@
 
 #pragma once
 
-/* sloganeer():
+/* ddate_sloganeer():
 	The perfect exhortatory mechanism:
 	brooks no arguments but returns a mallocked string
 	containing a delightful* catchphrase.
@@ -14,4 +14,4 @@
 	* Catchphrase not actually guaranteed to be delightful.
 */
 char *
-sloganeer(void);
+ddate_sloganeer(void);

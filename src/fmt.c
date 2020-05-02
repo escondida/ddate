@@ -154,7 +154,7 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 			/* Ranting and raving */
 			case 'e':
 				sloganeered = true;
-				tmp = sloganeer();
+				tmp = ddate_sloganeer();
 				break;
 			case 'X':
 				xyear = xday_countdown_years(dd.yold);
