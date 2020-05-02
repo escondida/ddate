@@ -32,7 +32,7 @@ get_holyday(ddate_season s, int32_t day);
 	Do the actual work of setting up a ddate struct from a
 	Gregorian year and day of year.
 */
-void
+ddate_error
 g2e4real(struct ddate *dd, int32_t year, int32_t day);
 
 void
@@ -54,20 +54,17 @@ doy_to_dow(int32_t day)
 	return day % 5;
 }
 
-bool
+ddate_error
 ddate_greg_to_eris(struct ddate *dd, int32_t year, int32_t day)
 {
 	if (day < 0 || (day > (is_tibsyear(year) ? 365 : 364))) {
-		fprintf(stderr, "Error: invalid day of the year: %d\n", day);
-		return false;
+		return DDATE_ERROR_YDAY;
 	}
 
-	g2e4real(dd, year, day);
-
-	return true;
+	return g2e4real(dd, year, day);
 }
 
-bool
+ddate_error
 ddate_greg_ymd_to_eris(struct ddate *dd, int32_t year, int32_t month, int32_t day)
 {
 	int32_t cal[2][12] = {
@@ -77,18 +74,15 @@ ddate_greg_ymd_to_eris(struct ddate *dd, int32_t year, int32_t month, int32_t da
 	int8_t tibs = is_tibsyear(year) ? 1 : 0;
 
 	if (year == 0) {
-		fputs("Error: there is no year 0 in the Gregorian calendar", stderr);
-		return false;
+		return DDATE_ERROR_INVALID_GREGYEAR;
 	}
 
 	if (month > 12 || month < 1) {
-		fprintf(stderr, "Error: invalid month number: %d\n", month);
-		return false;
+		return DDATE_ERROR_INVALID_GREGMONTH;
 	}
 
 	if (day < 1 || day > cal[tibs][month-1]) {
-		fprintf(stderr, "Error: invalid day of the month: %d\n", day);
-		return false;
+		return DDATE_ERROR_INVALID_GREGDAY_OF_MONTH;
 	}
 
 	/* Only add months that have already happened */
@@ -97,9 +91,7 @@ ddate_greg_ymd_to_eris(struct ddate *dd, int32_t year, int32_t month, int32_t da
 		day += cal[tibs][--month];
 	}
 
-	g2e4real(dd, year, day-1);
-
-	return true;
+	return g2e4real(dd, year, day-1);
 }
 
 ddate_holyday
@@ -126,7 +118,7 @@ get_holyday(ddate_season s, int32_t d)
 	}
 }
 
-void
+ddate_error
 g2e4real(struct ddate *dd, int32_t year, int32_t day)
 {
 	dd->yold = year_to_dyear(year);
@@ -141,6 +133,16 @@ g2e4real(struct ddate *dd, int32_t year, int32_t day)
 		dd->sday = dd->day % SEASON_LEN;
 		dd->holyday = get_holyday(dd->season, dd->sday);
 	}
+
+	if (dd->season == ERROR) {
+		return DDATE_ERROR_SEASON;
+	}
+
+	if (dd->holyday == ERRORDAY) {
+		return DDATE_ERROR_HDAY;
+	}
+
+	return DDATE_ERROR_NONE;
 }
 
 void
