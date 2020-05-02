@@ -26,7 +26,7 @@ nlines(FILE *);
 char *
 get_random_line(FILE *f)
 {
-	char *s;
+	char *s = NULL;
 	uint32_t len = nlines(f);
 
 	if (len > RAND_MAX || len <= 0) {
@@ -83,9 +83,7 @@ ddate_sloganeer()
 		return NULL;
 	}
 
-	if (!(slogan = get_random_line(slogans))) {
-		fputs("Error: could not get random slogan\n", stderr);
-	}
+	slogan = get_random_line(slogans);
 
 	if (fclose(slogans) == EOF) {
 		perror("Error");
