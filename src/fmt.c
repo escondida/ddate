@@ -316,7 +316,7 @@ char *
 fmt_ordinal(int32_t n)
 {
 	/* This is *only* for formatting dates */
-	if (n < 1 || n > 73) {
+	if (n < 1 || n > SEASON_LEN) {
 		return NULL;
 	}
 

@@ -14,8 +14,6 @@
 #include "convert.h"
 #include "tibs.h"
 
-#define SEASON_LEN 73
-
 /* doy_to_dow()
 	Return the member of the enum ddate_dow corresponding to the
 	day of the week for the given day of the year.

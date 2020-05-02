@@ -16,6 +16,8 @@
 
 #pragma once
 
+#define SEASON_LEN 73
+
 typedef enum ddate_error {
 	DDATE_ERROR_NONE = 0,
 	DDATE_ERROR_UNKNOWN,
