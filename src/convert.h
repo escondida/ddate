@@ -5,7 +5,7 @@
 
 #pragma once
 
-/* greg_to_eris()
+/* ddate_greg_to_eris()
 	Take a Gregorian year and day of year and mash them into a
 	more pleasingly Eristic form.
 */
