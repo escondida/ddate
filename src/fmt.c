@@ -34,6 +34,13 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 	size_t written = 0;
 	/* For bracketing off conditional sections */
 	bool print = true;
+	/* Count digits written in the loop below */
+	int32_t digits = 0;
+	int32_t yearmaxchars = 0;
+
+	/* We're using an int32_t for the year, use that for the max */
+	for (int32_t j = INT32_MAX; (j /= 10) > 0; yearmaxchars++) {
+	}
 
 	if (dd.tibsday) {
 		if (!find_tibs(fmt, &tibstart, &tibend)) {
@@ -68,19 +75,22 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 			bool sloganeered = false;
 			/* See ../ddata/wisdom/yearlength */
 			char *tmp = 0, n2s[16];
-			int8_t max_date = 15;
 			int32_t xyear = 0, xday = 0;
 
 			switch (fmt[++i]) {
 			/* Numbers and ordinal suffixes */
 			case 'd':
-				if (snprintf(n2s, (size_t)max_date+1, "%d", dd.sday+1) > max_date+1) {
+				/* The day of the season will always be 1-2 digits (+ \0) */
+				digits = snprintf(n2s, 3, "%d", dd.sday+1);
+				if (digits > 3 || digits < 1) {
 					return DDATE_ERROR_SDAY;
 				}
 				tmp = n2s;
 				break;
 			case 'D':
-				if (snprintf(n2s, (size_t)max_date+1, "%d", dd.day+1) > max_date+1) {
+				/* The day of the year will always be 1-3 digits (+ \0) */
+				digits = snprintf(n2s, 4, "%d", dd.day+1);
+				if (digits > 4 || digits < 1) {
 					return DDATE_ERROR_YDAY;
 				}
 				tmp = n2s;
@@ -91,7 +101,8 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 				}
 				break;
 			case 'Y':
-				if (snprintf(n2s, (size_t)max_date+1, "%d", dd.yold) > max_date+1) {
+				digits = snprintf(n2s, (size_t)yearmaxchars+1, "%d", dd.yold);
+				if (digits > yearmaxchars+1 || digits < 1) {
 					return DDATE_ERROR_YEAR;
 				}
 				tmp = n2s;
@@ -149,14 +160,17 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 				break;
 			case 'X':
 				xyear = xday_countdown_years(dd.yold);
-				if (snprintf(n2s, (size_t)max_date+1, "%d", xyear) > max_date+1) {
+				digits = snprintf(n2s, (size_t)yearmaxchars+1, "%d", xyear);
+				if (digits > yearmaxchars+1 || digits < 1) {
 					return DDATE_ERROR_XYEAR;
 				}
 				tmp = n2s;
 				break;
 			case 'x':
 				xday = xday_countdown_days(dd.day);
-				if (snprintf(n2s, (size_t)max_date+1, "%d", xday) > max_date+1) {
+				/* The days 'til next X-Day pre-anniversary will always be 1-3 digits */
+				digits = snprintf(n2s, 4, "%d", xday);
+				if (digits > 4 || digits < 1) {
 					return DDATE_ERROR_XDAY;
 				}
 				tmp = n2s;
