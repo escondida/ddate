@@ -60,6 +60,17 @@ main(int argc, char *argv[])
 			case 'v':
 				printf(("%s-%s\n"), progname, VERSION);
 				goto aftermath;
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				goto thud;
 			default:
 				usage(stderr, argv[0]);
 				err = DDATE_ERROR_USAGE;

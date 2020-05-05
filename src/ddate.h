@@ -85,5 +85,6 @@ struct ddate {
 	bool tibsyear:1;
 	bool tibsday:1;
 	bool lingananday:1;
-	int32_t pad:5;
+	bool bs:1;
+	int32_t pad:4;
 };

@@ -40,7 +40,7 @@ handle_tibs(struct ddate *dd, int64_t year, int16_t day);
 
 /* ddate_year_to_dyear(): Take a Gregorian year and make it into an Erisian one. */
 ddate_error
-year2yold(int64_t year, int64_t *yold);
+year2yold(int64_t year, int64_t *yold, bool *bs);
 
 ddate_dow
 doy_to_dow(int16_t day)
@@ -116,7 +116,7 @@ get_holyday(ddate_season s, int32_t d)
 
 	if (d == 4) {
 		return h[s][0];
-	} else if (d == 49) {\
+	} else if (d == 49) {
 		return h[s][1];
 	} else {
 		return NORMALDAY;
@@ -127,13 +127,15 @@ ddate_error
 g2e4real(struct ddate *dd, int64_t year, int16_t day)
 {
 	ddate_error err;
+	bool bs;
 
 	dd->season = ERROR;
 	dd->lingananday = false;
 
-	if ((err = year2yold(year, &dd->yold)) != DDATE_ERROR_NONE) {
+	if ((err = year2yold(year, &dd->yold, &bs)) != DDATE_ERROR_NONE) {
 		return err;
 	}
+	dd->bs = bs;
 
 	handle_tibs(dd, year, day);
 
@@ -179,14 +181,38 @@ handle_tibs(struct ddate *dd, int64_t year, int16_t day)
 }
 
 ddate_error
-year2yold(int64_t year, int64_t *yold)
+year2yold(int64_t year, int64_t *yold, bool *bs)
 {
-	int64_t offset = 3136 - 1970;
+	/* PD:00034: YOLD 3136 = 1970 C.E. */
+	int64_t offset = 1166;
 
 	if (year > INT64_MAX - offset) {
 		return DDATE_ERROR_BIGYEAR;
 	}
 
+	*bs = false;
+
+	if (year == 0) { /* There is no year 0 in the Gregorian calendar */
+		/* How did we get here? This should have already been checked. */
+		return DDATE_ERROR_INVALID_GREGYEAR;
+	} else if (year < -1166) {
+		/*
+			AFAIK, nobody until now has decided how to
+			represent pre-Snub dates. This is uncharted
+			territory. If you disagree, well...schism is
+			always an option.
+
+			My arbitrary decision: POEE Calendar also
+			skips year 0 (leave 0 to Void; see PD:00056),
+			dates prior to the Snub are considered BS
+			(Before Snub)
+		*/
+		*bs = true;
+	} else if (year < 0) { /* -1166 < date < 0 */
+		offset++;
+	}
+
 	*yold = year + offset;
+
 	return DDATE_ERROR_NONE;
 }
