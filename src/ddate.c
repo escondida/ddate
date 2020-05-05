@@ -34,8 +34,10 @@ main(int argc, char *argv[])
 	struct ddate dd = {0};
 	char *fnord = 0;
 	int32_t optind;
-	char *todayfmt = "Today is %{%W, the %d%o day of %S %} in the YOLD %Y.%[%n%tCelebrate %H!%]";
-	char *otherfmt = "%[%H, %]%{%W, the %d%o of %S%}, YOLD %Y";
+	char *todayfmt = "Today is %{%W, the %d%o day of %S %} in the %z %Y.%[%n%tCelebrate %H!%]";
+	char *otherfmt = "%[%H, %]%{%W, the %d%o of %S%}, %z %Y";
+	char *bsfmt = "%[%H, %]%{%W, the %d%o of %S%}, %Y %z";
+	char *bstodayfmt = "Your time machine or temporal accident has landed you on %{%W, the %d%o day of %S %} in the %Y %z.%[%n%tCelebrate %H!%]";
 	char *progname = argv[0], *p;
 	ddate_error err = DDATE_ERROR_NONE;
 
@@ -109,15 +111,22 @@ thud:
 			goto aftermath;
 		}
 
-		fnord = fnord ? fnord : otherfmt;
+		if (!fnord) {
+			fnord = dd.bs ? bsfmt : otherfmt;
+		}
 	} else if (argc == optind) {
 		t = time(NULL);
 		greg = localtime(&t);
-		fnord = fnord ? fnord : todayfmt;
+
 		/* tm_year starts counting at 1900 */
 		if ((err = ddate_greg_to_eris(&dd, greg->tm_year + 1900, greg->tm_yday))
 				!= DDATE_ERROR_NONE) {
 			goto aftermath;
+		}
+
+		if (!fnord) {
+			/* We have to account for time travel, *obviously* */
+			fnord = dd.bs ? bstodayfmt : todayfmt;
 		}
 	} else {
 		usage(stderr, argv[0]);
@@ -166,6 +175,9 @@ handle_error(ddate_error err)
 		fputs("Error: ddate only works until the last syllable of recorded time\n"
 				"(Or at least until INT64_MAX - (Gregorian - Discordian ))\n",
 				stderr);
+		break;
+	case DDATE_ERROR_ERA:
+		fputs("Error: invalid era\n", stderr);
 		break;
 	case DDATE_ERROR_HDAY:
 		fputs("Error: invalid holyday\n", stderr);

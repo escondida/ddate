@@ -15,8 +15,8 @@
 #include "fmt.h"
 #include "slogans.h"
 
-/* INT64_MIN = −9223372036854775807 = 22 chars, + 1 for \0 */
-#define MAX_DIGITS 23
+/* INT64_MIN = 9223372036854775807 = 21 chars, + 1 for \0 */
+#define MAX_DIGITS 22
 
 /* The day of the season will always be 1-2 digits (+ \0) */
 #define MAX_SDAY_DIGITS 3
@@ -83,7 +83,7 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 			int16_t xday = 0;
 
 			switch (fmt[++i]) {
-			/* Numbers and ordinal suffixes */
+			/* Numbers, eras, and ordinal suffixes */
 			case 'd':
 				digits = snprintf(n2s, MAX_SDAY_DIGITS, "%d", dd.sday+1);
 				if (digits > MAX_SDAY_DIGITS || digits < 1) {
@@ -109,6 +109,16 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 					return DDATE_ERROR_YEAR;
 				}
 				tmp = n2s;
+				break;
+			case 'z':
+				if (!(tmp = ddate_fmt_era(dd.bs, ABBRVTD))) {
+					return DDATE_ERROR_ERA;
+				}
+				break;
+			case 'Z':
+				if (!(tmp = ddate_fmt_era(dd.bs, FULL))) {
+					return DDATE_ERROR_ERA;
+				}
 				break;
 
 			/* Holydays */
@@ -237,6 +247,20 @@ ddate_fmt_dayname(ddate_dow day, ddate_len len)
 	}
 
 	return daynames[len][day];
+}
+
+char *
+ddate_fmt_era(bool bs, ddate_len len)
+{
+	if (len == ZERO) {
+		return NULL;
+	}
+
+	char *eras[2][2] = {
+		{"Year of Our Lady Discord", "Before Snub"},
+		{"YOLD", "BS"}
+	};
+	return eras[len][bs];
 }
 
 char *

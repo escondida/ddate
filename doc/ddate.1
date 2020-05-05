@@ -73,6 +73,13 @@ The number of days remaining until the next pre-anniversary of X-Day.
 For a precise X-day countdown, refer to the EXAMPLES section.
 .IP %Y
 The year of our Lady Discord (i.e., 3182)
+.IP %z
+If the year is equal to or after YOLD 1
+(BCE 1166, the date of the Original Snub),
+the abbreviation "YOLD".
+If the year is before the Original Snub, the abbreviation "BS".
+.IP %Z
+"Year of Our Lady Discord" or "Before Snub", as appropriate.
 .IP %%
 A percent sign
 .IP "%{, %}"
@@ -89,9 +96,9 @@ you should probably always enclose those things in %{%}.
 .br
 Today is Boomtime, the 14th day of Discord  in the YOLD 3186.
 .LP
-% ddate '+Today is %{%W, the %d%o of %S%}, %Y. %[%n%tCelebrate %H!%]'
+% ddate '+Today is %{%W, the %d%o of %S%}, %z %Y. %[%n%tCelebrate %H!%]'
 .br
-Today is Sweetmorn, the 42nd of Bureaucracy, 3161.
+Today is Sweetmorn, the 42nd of Bureaucracy, YOLD 3161.
 .LP
 % ddate "+It's %{%W, the %d%o of %S%}, %Y. %[%n%tCelebrate %H!%]" 1995 09 26
 .br
@@ -102,6 +109,10 @@ It's Prickle-Prickle, the 50th of Bureaucracy, 3161.
 % ddate +"Today's %{%W, the %d%o of %S%}, %Y. %[%nCelebrate %H!%]" 1996 2 29
 .br
 Today's St. Tib's Day, 3162.
+.LP
+% ddate '+%{%W, the %d%o of %S%}, %Y %Z' -1167 1 1
+.br
+Sweetmorn, the 1st of Chaos, 1 Before Snub
 .LP
 % ddate '+We only have %X years & %x days until our alien overlords attack!'
 .br

@@ -21,6 +21,13 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt);
 char *
 ddate_fmt_dayname(ddate_dow, ddate_len);
 
+/* ddate_fmt_era
+	If bs (before snub) is false, return "BS".
+	Otherwise, return "YOLD".
+*/
+char *
+ddate_fmt_era(bool bs, ddate_len len);
+
 /* ddate_fmt_holyday()
 	Return the name of the Discordian holyday, or NULL on
 	error.

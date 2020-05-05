@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "ddate.h"
 
@@ -212,7 +213,7 @@ year2yold(int64_t year, int64_t *yold, bool *bs)
 		offset++;
 	}
 
-	*yold = year + offset;
+	*yold = labs(year + offset);
 
 	return DDATE_ERROR_NONE;
 }
