@@ -39,8 +39,8 @@ void
 handle_tibs(struct ddate *dd, int64_t year, int16_t day);
 
 /* ddate_year_to_dyear(): Take a Gregorian year and make it into an Erisian one. */
-int64_t
-year_to_dyear(int64_t y);
+ddate_error
+year2yold(int64_t year, int64_t *yold);
 
 ddate_dow
 doy_to_dow(int16_t day)
@@ -126,9 +126,14 @@ get_holyday(ddate_season s, int32_t d)
 ddate_error
 g2e4real(struct ddate *dd, int64_t year, int16_t day)
 {
-	dd->yold = year_to_dyear(year);
+	ddate_error err;
+
 	dd->season = ERROR;
 	dd->lingananday = false;
+
+	if ((err = year2yold(year, &dd->yold)) != DDATE_ERROR_NONE) {
+		return err;
+	}
 
 	handle_tibs(dd, year, day);
 
@@ -173,8 +178,15 @@ handle_tibs(struct ddate *dd, int64_t year, int16_t day)
 	}
 }
 
-int64_t
-year_to_dyear(int64_t y)
+ddate_error
+year2yold(int64_t year, int64_t *yold)
 {
-	return y + (3136 - 1970);
+	int64_t offset = 3136 - 1970;
+
+	if (year > INT64_MAX - offset) {
+		return DDATE_ERROR_BIGYEAR;
+	}
+
+	*yold = year + offset;
+	return DDATE_ERROR_NONE;
 }

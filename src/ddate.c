@@ -151,6 +151,11 @@ handle_error(ddate_error err)
 	switch(err) {
 	case DDATE_ERROR_NONE: /* How did we get here? */
 		break;
+	case DDATE_ERROR_BIGYEAR:
+		fputs("Error: ddate only works until the last syllable of recorded time\n"
+				"(Or at least until INT64_MAX - (Gregorian - Discordian ))\n",
+				stderr);
+		break;
 	case DDATE_ERROR_HDAY:
 		fputs("Error: invalid holyday\n", stderr);
 		break;
