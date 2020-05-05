@@ -3,6 +3,7 @@
 	Format Discordian dates
 */
 
+#include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -13,6 +14,15 @@
 #include "ddate.h"
 #include "fmt.h"
 #include "slogans.h"
+
+/* INT64_MIN = −9223372036854775807 = 22 chars, + 1 for \0 */
+#define MAX_DIGITS 23
+
+/* The day of the season will always be 1-2 digits (+ \0) */
+#define MAX_SDAY_DIGITS 3
+
+/* The day of the year will always be 1-3 digits (+ \0) */
+#define MAX_YDAY_DIGITS 4
 
 bool
 find_tibs(const char *fmt, int32_t *tibstart, uint32_t *tibend);
@@ -36,11 +46,6 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 	bool print = true;
 	/* Count digits written in the loop below */
 	int32_t digits = 0;
-	int32_t yearmaxchars = 0;
-
-	/* We're using an int32_t for the year, use that for the max */
-	for (int32_t j = INT32_MAX; (j /= 10) > 0; yearmaxchars++) {
-	}
 
 	if (dd.tibsday) {
 		if (!find_tibs(fmt, &tibstart, &tibend)) {
@@ -73,24 +78,22 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 			written++;
 		} else {
 			bool sloganeered = false;
-			/* See ../ddata/wisdom/yearlength */
-			char *tmp = 0, n2s[16];
-			int32_t xyear = 0, xday = 0;
+			char *tmp = 0, n2s[MAX_DIGITS];
+			int64_t xyear = 0;
+			int16_t xday = 0;
 
 			switch (fmt[++i]) {
 			/* Numbers and ordinal suffixes */
 			case 'd':
-				/* The day of the season will always be 1-2 digits (+ \0) */
-				digits = snprintf(n2s, 3, "%d", dd.sday+1);
-				if (digits > 3 || digits < 1) {
+				digits = snprintf(n2s, MAX_SDAY_DIGITS, "%d", dd.sday+1);
+				if (digits > MAX_SDAY_DIGITS || digits < 1) {
 					return DDATE_ERROR_SDAY;
 				}
 				tmp = n2s;
 				break;
 			case 'D':
-				/* The day of the year will always be 1-3 digits (+ \0) */
-				digits = snprintf(n2s, 4, "%d", dd.day+1);
-				if (digits > 4 || digits < 1) {
+				digits = snprintf(n2s, MAX_YDAY_DIGITS, "%d", dd.yday+1);
+				if (digits > MAX_YDAY_DIGITS || digits < 1) {
 					return DDATE_ERROR_YDAY;
 				}
 				tmp = n2s;
@@ -101,8 +104,8 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 				}
 				break;
 			case 'Y':
-				digits = snprintf(n2s, (size_t)yearmaxchars+1, "%d", dd.yold);
-				if (digits > yearmaxchars+1 || digits < 1) {
+				digits = snprintf(n2s, MAX_DIGITS, "%ld", dd.yold);
+				if (digits > MAX_DIGITS || digits < 1) {
 					return DDATE_ERROR_YEAR;
 				}
 				tmp = n2s;
@@ -160,17 +163,16 @@ ddate_fmt(char *buf, size_t bufsize, struct ddate dd, const char *fmt)
 				break;
 			case 'X':
 				xyear = xday_countdown_years(dd.yold);
-				digits = snprintf(n2s, (size_t)yearmaxchars+1, "%d", xyear);
-				if (digits > yearmaxchars+1 || digits < 1) {
+				digits = snprintf(n2s, MAX_DIGITS, "%ld", xyear);
+				if (digits > MAX_DIGITS || digits < 1) {
 					return DDATE_ERROR_XYEAR;
 				}
 				tmp = n2s;
 				break;
 			case 'x':
-				xday = xday_countdown_days(dd.day);
-				/* The days 'til next X-Day pre-anniversary will always be 1-3 digits */
-				digits = snprintf(n2s, 4, "%d", xday);
-				if (digits > 4 || digits < 1) {
+				xday = xday_countdown_days(dd.yday, dd.tibsyear);
+				digits = snprintf(n2s, MAX_YDAY_DIGITS, "%d", xday);
+				if (digits > MAX_YDAY_DIGITS || digits < 1) {
 					return DDATE_ERROR_XDAY;
 				}
 				tmp = n2s;

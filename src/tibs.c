@@ -10,7 +10,7 @@
 #include "tibs.h"
 
 bool
-is_past_tibsday(int32_t y, int32_t d)
+is_past_tibsday(int64_t y, int32_t d)
 {
 	if (is_tibsyear(y) && d > TIBSDAY) {
 		return true;
@@ -20,7 +20,7 @@ is_past_tibsday(int32_t y, int32_t d)
 }
 
 bool
-is_tibsday(int32_t y, int32_t d)
+is_tibsday(int64_t y, int32_t d)
 {
 	if (is_tibsyear(y) && d == TIBSDAY) {
 		return true;
@@ -30,7 +30,7 @@ is_tibsday(int32_t y, int32_t d)
 }
 
 bool
-is_tibsyear(int32_t y)
+is_tibsyear(int64_t y)
 {
 	/* https://en.wikipedia.org/wiki/Leap_year#Algorithm */
 	if (y % 4 != 0) {

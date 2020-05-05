@@ -21,6 +21,7 @@
 typedef enum ddate_error {
 	DDATE_ERROR_NONE = 0,
 	DDATE_ERROR_HDAY,
+	DDATE_ERROR_INVALID_DATE,
 	DDATE_ERROR_INVALID_FMT,
 	DDATE_ERROR_INVALID_GREGDAY,
 	DDATE_ERROR_INVALID_GREGMONTH,
@@ -74,14 +75,14 @@ typedef enum ddate_season {
 } ddate_season;
 
 struct ddate {
-	int32_t yold;
-	int32_t day; /* -5 to 365 */
+	int64_t yold;
 	ddate_season season;
 	ddate_holyday holyday;
 	ddate_dow wday;
+	int16_t yday; /* -5 to 365 */
 	int8_t sday; /* -5 to 72 */\
 	bool tibsyear:1;
 	bool tibsday:1;
 	bool lingananday:1;
-	int32_t pad:21;
+	int32_t pad:5;
 };

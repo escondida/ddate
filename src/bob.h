@@ -26,8 +26,8 @@
 	of the given day and xday, *NOT* taking years into account. To
 	get the years 'til then, use xday_countdown_years.
 */
-int32_t
-xday_countdown_days(int32_t day);
+int16_t
+xday_countdown_days(int16_t day, bool tibsyear);
 
-int32_t
-xday_countdown_years(int32_t year);
+int64_t
+xday_countdown_years(int64_t year);

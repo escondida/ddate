@@ -11,10 +11,10 @@
 #define TIBSY -5
 
 bool
-is_past_tibsday(int32_t year, int32_t day);
+is_past_tibsday(int64_t year, int32_t day);
 
 bool
-is_tibsday(int32_t year, int32_t day);
+is_tibsday(int64_t year, int32_t day);
 
 bool
-is_tibsyear(int32_t year);
+is_tibsyear(int64_t year);

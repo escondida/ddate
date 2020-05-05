@@ -19,7 +19,7 @@
 	day of the week for the given day of the year.
 */
 ddate_dow
-doy_to_dow(int32_t day);
+doy_to_dow(int16_t day);
 
 /* get_holyday()
 	Return the holy day for the given date.
@@ -33,17 +33,17 @@ get_holyday(ddate_season s, int32_t day);
 	Gregorian year and day of year.
 */
 ddate_error
-g2e4real(struct ddate *dd, int32_t year, int32_t day);
+g2e4real(struct ddate *dd, int64_t year, int16_t day);
 
 void
-handle_tibs(struct ddate *dd, int32_t year, int32_t day);
+handle_tibs(struct ddate *dd, int64_t year, int16_t day);
 
 /* ddate_year_to_dyear(): Take a Gregorian year and make it into an Erisian one. */
-int32_t
-year_to_dyear(int32_t y);
+int64_t
+year_to_dyear(int64_t y);
 
 ddate_dow
-doy_to_dow(int32_t day)
+doy_to_dow(int16_t day)
 {
 	/*
 		Pay close attention to the following algorithm; its
@@ -61,11 +61,11 @@ ddate_greg_to_eris(struct ddate *dd, int32_t year, int32_t day)
 		return DDATE_ERROR_YDAY;
 	}
 
-	return g2e4real(dd, year, day);
+	return g2e4real(dd, year, (int16_t)day);
 }
 
 ddate_error
-ddate_greg_ymd_to_eris(struct ddate *dd, int32_t year, int32_t month, int32_t day)
+ddate_greg_ymd_to_eris(struct ddate *dd, int64_t year, int64_t month, int64_t day)
 {
 	int32_t cal[2][12] = {
 		{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
@@ -91,7 +91,12 @@ ddate_greg_ymd_to_eris(struct ddate *dd, int32_t year, int32_t month, int32_t da
 		day += cal[tibs][--month];
 	}
 
-	return g2e4real(dd, year, day-1);
+	if (day <= 0 || (tibs == 0 && day > 365) || (tibs == 1 && day > 366)) {
+		/* How did we get here? */
+		return DDATE_ERROR_YDAY;
+	}
+
+	return g2e4real(dd, year, (int16_t)day-1);
 }
 
 ddate_holyday
@@ -119,7 +124,7 @@ get_holyday(ddate_season s, int32_t d)
 }
 
 ddate_error
-g2e4real(struct ddate *dd, int32_t year, int32_t day)
+g2e4real(struct ddate *dd, int64_t year, int16_t day)
 {
 	dd->yold = year_to_dyear(year);
 	dd->season = ERROR;
@@ -127,10 +132,10 @@ g2e4real(struct ddate *dd, int32_t year, int32_t day)
 
 	handle_tibs(dd, year, day);
 
-	if (dd->day != TIBSY) {
-		dd->wday = doy_to_dow(dd->day);
-		dd->season = dd->day / SEASON_LEN;
-		dd->sday = dd->day % SEASON_LEN;
+	if (dd->yday != TIBSY) {
+		dd->wday = doy_to_dow(dd->yday);
+		dd->season = dd->yday / SEASON_LEN;
+		dd->sday = dd->yday % SEASON_LEN;
 		dd->holyday = get_holyday(dd->season, dd->sday);
 	}
 
@@ -146,12 +151,12 @@ g2e4real(struct ddate *dd, int32_t year, int32_t day)
 }
 
 void
-handle_tibs(struct ddate *dd, int32_t year, int32_t day)
+handle_tibs(struct ddate *dd, int64_t year, int16_t day)
 {
 	dd->tibsyear = is_tibsyear(year);
 
 	if (is_tibsday(year, day)) {
-		dd->day = TIBSY;
+		dd->yday = TIBSY;
 		dd->wday = TIBS;
 		dd->season = CHAOS;
 		dd->sday = TIBSY;
@@ -160,16 +165,16 @@ handle_tibs(struct ddate *dd, int32_t year, int32_t day)
 	} else {
 		dd->tibsday = false;
 		if (dd->tibsyear && is_past_tibsday(year, day)) {
-			dd->day = day - 1;
+			dd->yday = day - 1;
 			dd->tibsday = false;
 		} else {
-			dd->day = day;
+			dd->yday = day;
 		}
 	}
 }
 
-int32_t
-year_to_dyear(int32_t y)
+int64_t
+year_to_dyear(int64_t y)
 {
 	return y + (3136 - 1970);
 }

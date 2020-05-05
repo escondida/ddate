@@ -3,18 +3,21 @@
 	Stuff to do with the Subgenius
 */
 
+#include <stdbool.h>
 #include <stdint.h>
 
 #include "bob.h"
 
-int32_t
-xday_countdown_days(int32_t day)
+int16_t
+xday_countdown_days(int16_t day, bool tibsyear)
 {
-	return (day <= XDAY) ? XDAY - day : 365 - (day - XDAY);
+	int16_t x = tibsyear ? 366 : 365;
+
+	return (day <= XDAY) ? XDAY - day : x - (day - XDAY);
 }
 
-int32_t
-xday_countdown_years(int32_t year)
+int64_t
+xday_countdown_years(int64_t year)
 {
 	return XYEAR - year;
 }

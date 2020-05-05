@@ -3,6 +3,8 @@
 	 FIVE TONS OF FLAX
 */
 
+#include <errno.h>
+#include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -14,6 +16,9 @@
 
 #include "convert.h"
 #include "fmt.h"
+
+ddate_error
+arg2int64(char *s, int64_t *i);
 
 void
 handle_error(ddate_error error);
@@ -74,9 +79,19 @@ main(int argc, char *argv[])
 thud:
 	/* Y[Y[Y[Y]]] M[M] D[D] */
 	if (argc - optind == 3) {
-		int32_t moe = atoi(argv[optind]);
-		int32_t larry = atoi(argv[optind + 1]);
-		int32_t curly = atoi(argv[optind + 2]);
+		int64_t moe, larry, curly;
+
+		if ((err = arg2int64(argv[optind], &moe)) != DDATE_ERROR_NONE) {
+			goto aftermath;
+		}
+
+		if ((err = arg2int64(argv[optind+1], &larry)) != DDATE_ERROR_NONE) {
+			goto aftermath;
+		}
+
+		if ((err = arg2int64(argv[optind+2], &curly)) != DDATE_ERROR_NONE) {
+			goto aftermath;
+		}
 
 		if ((err = ddate_greg_ymd_to_eris(&dd, moe, larry, curly))
 				!= DDATE_ERROR_NONE) {
@@ -115,6 +130,21 @@ aftermath:
 	return (int)err;
 }
 
+ddate_error
+arg2int64(char *s, int64_t *i)
+{
+	errno = 0;
+	*i = strtol(s, NULL, 10);
+
+	if ((errno == ERANGE && (*i == LONG_MAX || *i == LONG_MIN))
+			|| (errno != 0 && *i == 0)) {
+		perror("strtol");
+		return DDATE_ERROR_INVALID_DATE;
+	}
+
+	return DDATE_ERROR_NONE;
+}
+
 void
 handle_error(ddate_error err)
 {
@@ -123,6 +153,9 @@ handle_error(ddate_error err)
 		break;
 	case DDATE_ERROR_HDAY:
 		fputs("Error: invalid holyday\n", stderr);
+		break;
+	case DDATE_ERROR_INVALID_DATE:
+		fputs("Error: invalid date\n", stderr);
 		break;
 	case DDATE_ERROR_INVALID_FMT:
 		fputs("Error: invalid format string. Please refer to the manual or your pineal gland.\n", stderr);
