@@ -1,3 +1,12 @@
+# Needless Complication
+
+Further updates may be retrieved from the [fossil
+repo](https://iff.ink/fossil/ddate). If you'd like to build libddate,
+for example, that's the place to go!
+
+Fossil's way cool, but if you don't feel like trying it out, you can
+just download the .tar.gz of any given commit or release.
+
 # Perpetual date converter from Gregorian to POEE calendar
 
 Official Discordian Document Numbering System
@@ -168,7 +177,7 @@ There are no secret messages in the original markdown, I assure you.
 
 [bo0tsbug:00013]: https://github.com/bo0ts/ddate/issues/13
 [ddate:00007]: doc/versions
-[ddbug]: https://github.com/escondida/ddate/issues/
+[ddbug]: https://iff.ink/fossil/ddate/ticket
 [pd:00017]: https://www.principiadiscordia.com/book/24.php
 [pd:00018]: https://www.principiadiscordia.com/book/25.php
 [pd:00034]: https://www.principiadiscordia.com/book/41.php
